@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">飞机大战</string>
+    <string name="easy_button">EASY</string>
+    <string name="common_button">COMMON</string>
+    <string name="hard_button">HARD</string>
+
+    <string name="easy_toast">EASY MODE</string>
+    <string name="common_toast">COMMON MODE</string>
+    <string name="hard_toast">HARD MODE</string>
+    <string name="sound">音效</string>
+</resources>

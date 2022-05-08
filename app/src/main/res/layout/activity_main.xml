@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@drawable/bg2">
+
+
+    <TextView
+        android:layout_width="205dp"
+        android:layout_height="155dp"
+        android:gravity="center_horizontal"
+        android:text="飞机大战"
+        android:textColor="#770B0B"
+        android:textSize="30dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/easy_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/easy_button" />
+
+        <Button
+            android:id="@+id/common_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/common_button" />
+
+        <Button
+            android:id="@+id/hard_button"
+            android:layout_width="144dp"
+            android:layout_height="wrap_content"
+            android:text="@string/hard_button" />
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/sound_check_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/sound"/>
+
+
+</LinearLayout>
