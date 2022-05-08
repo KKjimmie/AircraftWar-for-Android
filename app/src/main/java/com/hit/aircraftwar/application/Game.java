@@ -260,7 +260,7 @@ public class Game extends AppCompatActivity {
     }
 
     /**
-     * 飞机移动
+     * 敌机移动
      */
     private void aircraftsMoveAction() {
         for (AbstractAircraft enemyAircraft : enemyAircrafts) {
@@ -353,21 +353,21 @@ public class Game extends AppCompatActivity {
 //                MusicController.setGetSupplyBgm();
                 // 吃到道具加分
                 score += 10;
-                if (prop instanceof BombProp){
-                    for(AbstractAircraft enemyAircraft : enemyAircrafts){
-                        if (! (enemyAircraft instanceof  Boss)){
-                            ((BombProp) prop).addCanBoom((CanBoom) enemyAircraft);
-                            if (enemyAircraft instanceof EliteEnemy){
-                                score += 20;
-                            }else {
-                                score += 10;
-                            }
-                        }
-                    }
-                    for(BaseBullet enemyBullet : enemyBullets){
-                        ((BombProp) prop).addCanBoom((CanBoom) enemyBullet);
-                    }
-                }
+//                if (prop instanceof BombProp){
+//                    for(AbstractAircraft enemyAircraft : enemyAircrafts){
+//                        if (! (enemyAircraft instanceof  Boss)){
+//                            ((BombProp) prop).addCanBoom((CanBoom) enemyAircraft);
+//                            if (enemyAircraft instanceof EliteEnemy){
+//                                score += 20;
+//                            }else {
+//                                score += 10;
+//                            }
+//                        }
+//                    }
+//                    for(BaseBullet enemyBullet : enemyBullets){
+//                        ((BombProp) prop).addCanBoom((CanBoom) enemyBullet);
+//                    }
+//                }
                 prop.work();
                 prop.vanish();
             }

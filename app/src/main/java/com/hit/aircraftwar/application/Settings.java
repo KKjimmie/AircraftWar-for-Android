@@ -18,8 +18,6 @@ public class Settings {
     public static final boolean SOUND_ON = true;
     public static final boolean SOUND_OFF = false;
 
-    // 单例
-    private volatile static Settings instance = null;
 
     // 默认游戏模式及音效设置
     private int gameMode = EASY_MODE;
@@ -105,6 +103,10 @@ public class Settings {
      */
     public int baseBulletPower = 10;
     public int bulletSpeedY = 9;
+
+
+    // 单例
+    private volatile static Settings instance = null;
 
     private Settings() {
     }

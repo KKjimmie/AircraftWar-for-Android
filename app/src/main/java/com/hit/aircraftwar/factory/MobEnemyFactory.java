@@ -14,7 +14,7 @@ public class MobEnemyFactory implements ProduceEnemy {
     @Override
     public AbstractAircraft produceEnemy() {
         int locationX = (int) (Math.random() * (MainActivity.width));
-        int locationY = 100;
+        int locationY = 0;
         int speedX = Settings.getInstance().mobEnemySpeedX;
         int speedY = Settings.getInstance().mobEnemySpeedY;
         int hp = Settings.getInstance().mobEnemyHp;

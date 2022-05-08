@@ -64,6 +64,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         this.setKeepScreenOn(true);
         //设置是否抗锯齿
         paint.setAntiAlias(true);
+        // 处理屏幕闪烁问题
+        paint.setDither(true);
     }
 
     @Override
@@ -76,7 +78,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
     {//改变
-
+        screenHeight = height;
+        screenWidth = width;
     }
 
     @Override

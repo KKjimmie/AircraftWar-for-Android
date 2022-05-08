@@ -135,16 +135,19 @@ public abstract class AbstractFlyingObject {
 
 
     public int getWidth() {
-        return ImageManager.getWidth(image);
+//        return ImageManager.getWidth(image);
+        return 100;
     }
+
     public int getHeight() {
-        return ImageManager.getHeight(image);
+//        return ImageManager.getHeight(image);
+        return 100;
     }
 
     public int getImage() {
-        if (image == -1){
-            image =  ImageManager.get(this);
-        }
+//        if (image == -1){
+//            image =  ImageManager.get(this);
+//        }
         return image;
     }
     public boolean notValid() {
