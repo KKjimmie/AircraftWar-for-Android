@@ -6,8 +6,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.hit.aircraftwar.aircraft.AbstractAircraft;
 import com.hit.aircraftwar.aircraft.HeroAircraft;
@@ -30,6 +34,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     Paint paint = new Paint();
     // 子线程标志位
     private boolean isDrawing;
+    // 用于绘制的线程
+    private Thread thread;
 
     private int screenWidth = MainActivity.width;
     private int screenHeight = MainActivity.height;
@@ -87,30 +93,37 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     {
         //销毁
         isDrawing = false;
-        System.out.println("end");
     }
 
     @Override
     public void run()
     {
-        while (isDrawing)
-        {
-            draw();
-        }
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (isDrawing){
+                    draw();
+                }
+            }
+        });
+        thread.start();
     }
 
     private int backgroundTop = 0;
-
+    Bitmap bitmap;
     private void draw()
     {
         try
         {
             mCanvas = mSurfaceHolder.lockCanvas();
+            if(mCanvas != null){
+                bitmap = Bitmap.createBitmap(mCanvas.getWidth(), mCanvas.getHeight(),Bitmap.Config.ARGB_8888);
+            }
             synchronized (mSurfaceHolder)
             {
                 // 这里进行内容的绘制
                 // 绘制背景,图片滚动
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), bg);
+                bitmap = BitmapFactory.decodeResource(getResources(), bg);
                 mCanvas.drawBitmap(bitmap, 0, backgroundTop - screenHeight, paint);
                 mCanvas.drawBitmap(bitmap, 0, backgroundTop, paint);
                 backgroundTop += 5;
@@ -136,7 +149,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         }
         catch (Exception e)
         {
-            System.out.println("err");
+            e.printStackTrace();
         }
         finally
         {

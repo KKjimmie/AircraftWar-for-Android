@@ -1,12 +1,16 @@
 package com.hit.aircraftwar.application;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hit.aircraftwar.R;
@@ -76,7 +80,7 @@ public class Game extends AppCompatActivity {
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         props = new LinkedList<>();
-        Log.d("1111111111","1111111111111");
+//        Log.d("1111111111","1111111111111");
         gameView = new GameView(this, R.drawable.bg, heroAircraft, enemyAircrafts, heroBullets, enemyBullets, props);
         setContentView(gameView);
         action();
@@ -87,24 +91,6 @@ public class Game extends AppCompatActivity {
         heroAircraft.setLocation((int)event.getRawX(),(int)(event.getRawY() - 100));
         return true;
     }
-
-//    private void paintImageWithPositionRevised(List<? extends AbstractFlyingObject> objects) {
-//        if (objects.size() == 0) {
-//            return;
-//        }
-////        canvas = mSurfaceHolder.lockCanvas();
-//        Bitmap scratch;
-//        for (AbstractFlyingObject object: objects) {
-//            int image = object.getImage();
-//            scratch = BitmapFactory.decodeResource(getResources(), image);
-//            float width = scratch.getWidth();
-//            float height = scratch.getHeight();
-//            assert image != -1 : objects.getClass().getName() + " has no image! ";
-//            canvas.drawBitmap(scratch, object.getLocationX() - width / 2,
-//                    object.getLocationY() - height / 2, null);
-//        }
-////        mSurfaceHolder.unlockCanvasAndPost(canvas);
-//    }
 
     // 游戏入口
     public void action() {
@@ -353,21 +339,21 @@ public class Game extends AppCompatActivity {
 //                MusicController.setGetSupplyBgm();
                 // 吃到道具加分
                 score += 10;
-//                if (prop instanceof BombProp){
-//                    for(AbstractAircraft enemyAircraft : enemyAircrafts){
-//                        if (! (enemyAircraft instanceof  Boss)){
-//                            ((BombProp) prop).addCanBoom((CanBoom) enemyAircraft);
-//                            if (enemyAircraft instanceof EliteEnemy){
-//                                score += 20;
-//                            }else {
-//                                score += 10;
-//                            }
-//                        }
-//                    }
-//                    for(BaseBullet enemyBullet : enemyBullets){
-//                        ((BombProp) prop).addCanBoom((CanBoom) enemyBullet);
-//                    }
-//                }
+                if (prop instanceof BombProp){
+                    for(AbstractAircraft enemyAircraft : enemyAircrafts){
+                        if (! (enemyAircraft instanceof  Boss)){
+                            ((BombProp) prop).addCanBoom((CanBoom) enemyAircraft);
+                            if (enemyAircraft instanceof EliteEnemy){
+                                score += 20;
+                            }else {
+                                score += 10;
+                            }
+                        }
+                    }
+                    for(BaseBullet enemyBullet : enemyBullets){
+                        ((BombProp) prop).addCanBoom((CanBoom) enemyBullet);
+                    }
+                }
                 prop.work();
                 prop.vanish();
             }
@@ -378,7 +364,7 @@ public class Game extends AppCompatActivity {
      * 游戏结束检查以及打印排行榜
      */
     private void isGameOver(){
-        if (heroAircraft.getHp() <= 0)
+        if ((heroAircraft.getHp() <= 0 || gameOverFlag))
         {
             // TODO:gameover音效
             // 游戏结束
@@ -444,6 +430,24 @@ public class Game extends AppCompatActivity {
         heroBullets.removeIf(AbstractFlyingObject::notValid);
         enemyAircrafts.removeIf(AbstractFlyingObject::notValid); // ?由于要绘制爆炸动画，此部分的后处理放在paintVanish中
         props.removeIf(AbstractFlyingObject::notValid);
+    }
+
+
+    // TODO:监听返回按键,弹窗提示
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setTitle("确认退出？")
+                    .setMessage("退出将结束游戏且不保存数据。")
+                    .setIcon(R.drawable.hero)
+                    .setPositiveButton("确定", (dialog, which) -> gameOverFlag = true)
+
+                    .setNegativeButton("取消", (dialog, which) -> {})
+                    .create();
+            alertDialog.show();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 
