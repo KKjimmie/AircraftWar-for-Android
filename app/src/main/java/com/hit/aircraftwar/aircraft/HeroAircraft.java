@@ -66,16 +66,6 @@ public class HeroAircraft extends AbstractAircraft {
         }
         return instance;
     }
-    public static HeroAircraft getInstance(int locationX, int locationY, int speedX, int speedY, int hp){
-        if (instance == null) {
-            synchronized (HeroAircraft.class){
-                if (instance == null) {
-                    instance = new HeroAircraft(locationX, locationY, speedX, speedY, hp);
-                }
-            }
-        }
-        return instance;
-    }
 
     public int getShootNum() {
         return shootNum;
@@ -116,6 +106,13 @@ public class HeroAircraft extends AbstractAircraft {
 
     public void decreaseShootNum() {
         shootNum --;
+    }
+
+    public void resetHeroAircraft(){
+        int locationX = MainActivity.width / 2;
+        int locationY = MainActivity.height - 90;
+        setLocation(locationX, locationY);
+        setHeroHp(Settings.getInstance().heroHp);
     }
 
 }

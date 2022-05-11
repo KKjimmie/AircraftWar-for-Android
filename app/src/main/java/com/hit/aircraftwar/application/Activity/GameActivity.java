@@ -73,7 +73,12 @@ public class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Objects.requireNonNull(getSupportActionBar()).hide();
+
+        // 重置一下分数
+        score = 0;
         heroAircraft = HeroAircraft.getInstance();
+        // 由于英雄机为单例模式，因此需要重置一下英雄机设置
+        HeroAircraft.getInstance().resetHeroAircraft();
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
@@ -367,10 +372,9 @@ public class GameActivity extends AppCompatActivity {
             // TODO:gameover音效
             // 游戏结束
             gameOverFlag = true;
-            Intent intent = new Intent(GameActivity.this, MainActivity.class);
-            startActivity(intent);
             gameView.surfaceDestroyed(gameView.getHolder());
             this.onDestroy();
+//            finish();
         }
     }
 //    private void isGameOver() throws IOException {
@@ -445,6 +449,7 @@ public class GameActivity extends AppCompatActivity {
                     .setPositiveButton("确定", (dialog, which) -> {
                         gameOverFlag = true;
                         back.set(true);
+                        finish();
                     })
 
                     .setNegativeButton("取消", (dialog, which) -> {back.set(false);})
@@ -452,6 +457,10 @@ public class GameActivity extends AppCompatActivity {
             alertDialog.show();
         }
         if (back.get()){
+            this.onDestroy();
+            Intent intent = new Intent(GameActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             return super.onKeyDown(keyCode, event);
         }
         else return false;

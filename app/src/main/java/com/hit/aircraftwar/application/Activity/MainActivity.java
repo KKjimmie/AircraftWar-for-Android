@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.hit.aircraftwar.R;
+import com.hit.aircraftwar.music.MySoundPool;
 
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         easyButton.setOnClickListener(
                 view -> {
                     Toast.makeText(this,R.string.easy_toast,Toast.LENGTH_SHORT).show();
-//                    setContentView(new Game(this));
                     Intent intent = new Intent(MainActivity.this, GameActivity.class);
                     startActivity(intent);
                 });
@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         hardButton = (Button) findViewById(R.id.hard_button);
         hardButton.setOnClickListener(
                 view -> Toast.makeText(this, R.string.hard_toast, Toast.LENGTH_SHORT).show());
-
         soundCheckBox = (CheckBox) findViewById(R.id.sound_check_box);
         soundCheckBox.setOnCheckedChangeListener(this);
 
@@ -105,10 +104,12 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
             alertDialog.show();
         }
         if (back.get()){
-            Intent home=new Intent(Intent.ACTION_MAIN);
-            home.addCategory(Intent.CATEGORY_HOME);
-            startActivity(home);
+            // TODO:实现结束进程返回桌面
+//            Intent home = new Intent(Intent.ACTION_MAIN);
+//            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            home.addCategory(Intent.CATEGORY_HOME);
+//            startActivity(home);
         }
-        return true;
+        return back.get();
     }
 }
