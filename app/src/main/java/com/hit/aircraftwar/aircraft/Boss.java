@@ -30,7 +30,7 @@ public class Boss extends AbstractAircraft {
     public Boss(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
         this.setStrategy(new ScatteredShoot());
-        this.image = ImageManager.BOSS_IMAGE;
+        this.bitmap = ImageManager.BOSS_BITMAP;
     }
 
     @Override

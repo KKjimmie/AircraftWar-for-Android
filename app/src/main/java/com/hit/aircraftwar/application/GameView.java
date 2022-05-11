@@ -6,12 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.hit.aircraftwar.aircraft.AbstractAircraft;
 import com.hit.aircraftwar.aircraft.HeroAircraft;
@@ -116,9 +112,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         try
         {
             mCanvas = mSurfaceHolder.lockCanvas();
-            if(mCanvas != null){
-                bitmap = Bitmap.createBitmap(mCanvas.getWidth(), mCanvas.getHeight(),Bitmap.Config.ARGB_8888);
-            }
             synchronized (mSurfaceHolder)
             {
                 // 这里进行内容的绘制
@@ -139,7 +132,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
                 paintImageWithPositionRevised(props);
                 paintImageWithPositionRevised(enemyAircrafts);
 
-                bitmap = BitmapFactory.decodeResource(getResources(), ImageManager.HERO_IMAGE);
+                bitmap = heroAircraft.getBitmap();
                 mCanvas.drawBitmap(bitmap, heroAircraft.getLocationX() - bitmap.getWidth() / 2, heroAircraft.getLocationY() - bitmap.getHeight() / 2, paint);
 
                 //绘制得分和生命值
@@ -151,13 +144,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         {
             e.printStackTrace();
         }
-        finally
-        {
-            if (mCanvas != null)
-            {
-                mSurfaceHolder.unlockCanvasAndPost(mCanvas);
-            }
-        }
+        mSurfaceHolder.unlockCanvasAndPost(mCanvas);
     }
 
     private void paintImageWithPositionRevised(List<? extends AbstractFlyingObject> objects)
@@ -166,10 +153,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         {
             return;
         }
-        Bitmap bitmap;
         for (AbstractFlyingObject object : objects)
         {
-            bitmap = BitmapFactory.decodeResource(getResources(), object.getImage());
+            bitmap = object.getBitmap();
             mCanvas.drawBitmap(bitmap, object.getLocationX() - bitmap.getWidth() / 2, object.getLocationY() - bitmap.getHeight() / 2, paint);
         }
     }
@@ -182,7 +168,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         txt.setColor(Color.RED);
         txt.setTextSize(50);
         txt.setAntiAlias(true);
-        mCanvas.drawText("SCORE:" + Game.score, x, y, txt);
+        mCanvas.drawText("SCORE:" + GameActivity.score, x, y, txt);
         y = y + 50;
         mCanvas.drawText("LIFE:" + heroAircraft.getHp(), x, y, txt);
     }

@@ -15,7 +15,7 @@ public class BloodProp extends AbstractProp {
 
     public BloodProp(int locationX, int locationY, int speedX, int speedY) {
         super(locationX, locationY, speedX, speedY);
-        this.image = ImageManager.BLOOD_PROP_IMAGE;
+        this.bitmap = ImageManager.BLOOD_PROP_BITMAP;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class MobEnemy extends AbstractAircraft implements CanBoom {
 
     public MobEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
-        this.image = ImageManager.MOB_ENEMY_IMAGE;
+        this.bitmap = ImageManager.MOB_ENEMY_BITMAP;
     }
 
     @Override

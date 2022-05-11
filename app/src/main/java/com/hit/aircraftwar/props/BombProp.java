@@ -16,7 +16,7 @@ public class BombProp extends AbstractProp{
 
     public BombProp(int locationX, int locationY, int speedX, int speedY) {
         super(locationX, locationY, speedX, speedY);
-        this.image = ImageManager.BOMB_PROP_IMAGE;
+        this.bitmap = ImageManager.BOMB_PROP_BITMAP;
     }
 
     public void addCanBoom(CanBoom canBoom){

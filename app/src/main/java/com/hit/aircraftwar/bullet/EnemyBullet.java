@@ -12,7 +12,7 @@ public class EnemyBullet extends BaseBullet implements CanBoom {
 
     public EnemyBullet(int locationX, int locationY, int speedX, int speedY, int power) {
         super(locationX, locationY, speedX, speedY, power);
-        this.image = ImageManager.ENEMY_BULLET_IMAGE;
+        this.bitmap = ImageManager.ENEMY_BULLET_BITMAP;
     }
 
     @Override

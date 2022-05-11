@@ -14,7 +14,7 @@ public class BulletProp extends AbstractProp{
 
     public BulletProp(int locationX, int locationY, int speedX, int speedY) {
         super(locationX, locationY, speedX, speedY);
-        this.image = ImageManager.BULLET_PROP_IMAGE;
+        this.bitmap = ImageManager.BULLET_PROP_BITMAP;
     }
 
     @Override

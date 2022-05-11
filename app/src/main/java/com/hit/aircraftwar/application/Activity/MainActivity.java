@@ -1,9 +1,12 @@
 package com.hit.aircraftwar.application.Activity;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -11,10 +14,10 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.hit.aircraftwar.R;
-import com.hit.aircraftwar.application.Game;
 
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
@@ -27,11 +30,15 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public static int height;
     public static ScheduledThreadPoolExecutor executorService;
 
+    public static MainActivity baseActivity;//传递给非activity的类使用
+    public static Context mContext;//传递给非activity的类使用
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        baseActivity=this;//传递给非activity的类使用
+        mContext=this.getBaseContext();//传递给非activity的类使用
 
         //获取屏幕宽高
 
@@ -54,13 +61,16 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 view -> {
                     Toast.makeText(this,R.string.easy_toast,Toast.LENGTH_SHORT).show();
 //                    setContentView(new Game(this));
-                    Intent intent = new Intent(MainActivity.this, Game.class);
+                    Intent intent = new Intent(MainActivity.this, GameActivity.class);
                     startActivity(intent);
                 });
 
         commonButton = (Button) findViewById(R.id.common_button);
         commonButton.setOnClickListener(
-                view -> Toast.makeText(this,R.string.common_toast,Toast.LENGTH_SHORT).show());
+                view -> {
+                    Toast.makeText(this,R.string.common_toast,Toast.LENGTH_SHORT).show();
+//                    MySoundPool.getInstance().playSound(1,true);
+                });
 
         hardButton = (Button) findViewById(R.id.hard_button);
         hardButton.setOnClickListener(
@@ -78,5 +88,27 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         }else if(! compoundButton.isChecked()){
             Toast.makeText(this, "音效关",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    // TODO:返回桌面
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        AtomicReference<Boolean> back = new AtomicReference<>(false);
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setTitle("退出游戏？")
+                    .setMessage("是否退出游戏。")
+                    .setIcon(R.drawable.hero)
+                    .setPositiveButton("确定", (dialog, which) -> {back.set(true); })
+                    .setNegativeButton("取消", (dialog, which) -> {back.set(false);})
+                    .create();
+            alertDialog.show();
+        }
+        if (back.get()){
+            Intent home=new Intent(Intent.ACTION_MAIN);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
+        }
+        return true;
     }
 }

@@ -1,6 +1,8 @@
 package com.hit.aircraftwar.basic;
 
 
+import android.graphics.Bitmap;
+
 import com.hit.aircraftwar.aircraft.AbstractAircraft;
 import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.application.ImageManager;
@@ -38,7 +40,7 @@ public abstract class AbstractFlyingObject {
      * 图片,
      * null 表示未设置
      */
-    protected int image = -1;
+    protected Bitmap bitmap = null;
     /**
      * x 轴长度，根据图片尺寸获得
      * -1 表示未设置
@@ -135,21 +137,24 @@ public abstract class AbstractFlyingObject {
 
 
     public int getWidth() {
-//        return ImageManager.getWidth(image);
-        return 100;
+        if(bitmap != null){
+            return bitmap.getWidth();
+        }else return 100;
     }
 
     public int getHeight() {
-//        return ImageManager.getHeight(image);
-        return 100;
+        if(bitmap != null){
+            return bitmap.getHeight();
+        }
+        else return 100;
     }
 
-    public int getImage() {
-//        if (image == -1){
-//            image =  ImageManager.get(this);
-//        }
-        return image;
-    }
+//    public int getImage() {
+////        if (image == -1){
+////            image =  ImageManager.get(this);
+////        }
+//        return image;
+//    }
     public boolean notValid() {
         return !this.isValid;
     }
@@ -161,6 +166,13 @@ public abstract class AbstractFlyingObject {
      */
     public void vanish() {
         isValid = false;
+    }
+
+    public Bitmap getBitmap(){
+        if(bitmap == null){
+
+        }
+        return bitmap;
     }
 
 }

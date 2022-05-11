@@ -10,11 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AircraftWar">
         <activity
+            android:screenOrientation="sensorPortrait"
             android:name=".application.Activity.GameActivity"
             android:exported="false" />
-        <activity
-            android:name=".application.Game"
-            android:exported="true"/>
         <activity
             android:name=".application.Activity.MainActivity"
             android:exported="true">

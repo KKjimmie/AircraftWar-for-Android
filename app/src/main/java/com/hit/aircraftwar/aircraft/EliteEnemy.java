@@ -33,7 +33,7 @@ public class EliteEnemy extends AbstractAircraft implements CanBoom {
     public EliteEnemy(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY, speedX, speedY, hp);
         this.setStrategy(new DirectShoot());
-        this.image = ImageManager.ELITE_ENEMY_IMAGE;
+        this.bitmap = ImageManager.ELITE_ENEMY_BITMAP;
     }
 
     @Override
