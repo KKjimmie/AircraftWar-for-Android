@@ -2,6 +2,7 @@ package com.hit.aircraftwar.props;
 
 import com.hit.aircraftwar.application.ImageManager;
 import com.hit.aircraftwar.basic.CanBoom;
+import com.hit.aircraftwar.music.MySoundPool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,5 +39,6 @@ public class BombProp extends AbstractProp{
         notifyAllToBoom();
         // TODO:播放爆炸音效
 //        MusicController.setBombExplosionBgm();
+        MySoundPool.playSound(MySoundPool.BOMB_EXPLOSION, false);
     }
 }

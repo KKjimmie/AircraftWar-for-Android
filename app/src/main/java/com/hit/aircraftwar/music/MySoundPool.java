@@ -7,17 +7,18 @@ import android.media.SoundPool;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hit.aircraftwar.R;
+import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.application.Settings;
 
 import java.util.HashMap;
 
-public class MySoundPool extends AppCompatActivity {
+public class MySoundPool {
 
     // 设置为单例模式
     private volatile static MySoundPool instance = null;
 
-    private SoundPool soundPool;
-    private HashMap<Integer, Integer> soundData;
+    private static SoundPool soundPool = new SoundPool(50, AudioManager.STREAM_MUSIC,0);;
+    private static HashMap<Integer, Integer> soundData= new HashMap<>();
 
     // 音乐资源
     public static int BGM = R.raw.bgm;
@@ -27,33 +28,30 @@ public class MySoundPool extends AppCompatActivity {
     public static int BULLET_HIT = R.raw.bullet_hit;
     public static int GAME_OVER = R.raw.game_over;
     public static int GET_SUPPLY = R.raw.get_supply;
-
+    static {
+        soundData.put(BGM, soundPool.load(MainActivity.mContext, BGM, 1));
+        soundData.put(BGM_BOSS, soundPool.load(MainActivity.mContext, BGM_BOSS, 1));
+        soundData.put(BOMB_EXPLOSION, soundPool.load(MainActivity.mContext, BOMB_EXPLOSION, 1));
+        soundData.put(BULLET, soundPool.load(MainActivity.mContext, BULLET, 1));
+        soundData.put(BULLET_HIT, soundPool.load(MainActivity.mContext, BULLET_HIT, 1));
+        soundData.put(GAME_OVER, soundPool.load(MainActivity.mContext, GAME_OVER, 1));
+        soundData.put(GET_SUPPLY, soundPool.load(MainActivity.mContext, GET_SUPPLY, 1));
+    }
 
     private MySoundPool() {
-        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,0);
-        soundData = new HashMap<Integer, Integer>();
-        soundData.put(BGM, soundPool.load(this, BGM, 1));
-
 
     }
 
-    public static MySoundPool getInstance(){
-        if(instance == null){
-            synchronized (Settings.class){
-                if(instance == null) {
-                    instance = new MySoundPool();
-                }
-            }
-        }
-        return instance;
-    }
-
-    public void playSound(int sound, boolean isloop){
-        AudioManager am = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+    public static void playSound(int sound, boolean isloop){
+        AudioManager am = (AudioManager) MainActivity.mContext.getSystemService(Context.AUDIO_SERVICE);
         float audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         float volumnCurrent = am.getStreamVolume(AudioManager.STREAM_MUSIC);
         float volumnRatio = volumnCurrent / audioMaxVolumn;
-
-        soundPool.play(soundData.get(BGM), volumnRatio, volumnRatio, 1, -1, 1);
+        // 循环次数
+        int loopNum;
+        if(isloop){
+            loopNum = -1;
+        }else loopNum = 0;
+        soundPool.play(soundData.get(sound), volumnRatio,volumnRatio , 1, loopNum, 1);
     }
 }

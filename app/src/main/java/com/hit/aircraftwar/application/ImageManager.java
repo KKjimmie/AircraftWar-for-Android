@@ -68,9 +68,20 @@ public class ImageManager {
         return bitmap;
     }
 
+    /**
+     * 从资源中获取bitmap
+     * @param image R.drawable.
+     * @return 相对应的bitmap
+     */
     public static Bitmap getBitmap(int image) {
         return BitmapFactory.decodeResource(MainActivity.baseActivity.getResources(), image);
     }
+
+    /**
+     * 从类名得到bitmap
+     * @param className 类名
+     * @return 相对应的bitmap
+     */
     public static Bitmap get(String className) {
         return CLASSNAME_IMAGE_MAP.get(className);
     }
