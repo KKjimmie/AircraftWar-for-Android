@@ -94,15 +94,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     @Override
     public void run()
     {
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isDrawing){
-                    draw();
-                }
+        while (isDrawing){
+            draw();
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-        thread.start();
+        }
     }
 
     private int backgroundTop = 0;
@@ -112,6 +111,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         try
         {
             mCanvas = mSurfaceHolder.lockCanvas();
+            if(mSurfaceHolder == null || mCanvas == null){
+                return;
+            }
             synchronized (mSurfaceHolder)
             {
                 // 这里进行内容的绘制
@@ -138,7 +140,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
                 //绘制得分和生命值
                 paintScoreAndLife();
             }
-
         }
         catch (Exception e)
         {
@@ -160,6 +161,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         }
     }
 
+    /**
+     * 绘制得分和生命值
+     */
     private void paintScoreAndLife()
     {
         int x = 30;

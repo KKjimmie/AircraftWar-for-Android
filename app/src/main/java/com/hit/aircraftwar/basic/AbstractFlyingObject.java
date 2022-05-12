@@ -149,12 +149,6 @@ public abstract class AbstractFlyingObject {
         else return 100;
     }
 
-//    public int getImage() {
-////        if (image == -1){
-////            image =  ImageManager.get(this);
-////        }
-//        return image;
-//    }
     public boolean notValid() {
         return !this.isValid;
     }
@@ -170,7 +164,7 @@ public abstract class AbstractFlyingObject {
 
     public Bitmap getBitmap(){
         if(bitmap == null){
-
+            bitmap = ImageManager.get(this.getClass().getName());
         }
         return bitmap;
     }

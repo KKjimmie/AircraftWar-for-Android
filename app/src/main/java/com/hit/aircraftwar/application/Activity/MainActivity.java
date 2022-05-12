@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         mContext=this.getBaseContext();//传递给非activity的类使用
 
         //获取屏幕宽高
-
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         width = dm.widthPixels;
@@ -69,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         commonButton.setOnClickListener(
                 view -> {
                     Toast.makeText(this,R.string.common_toast,Toast.LENGTH_SHORT).show();
-//                    MySoundPool.getInstance().playSound(1,true);
+                    MySoundPool.getInstance().playSound(1,true);
                 });
 
         hardButton = (Button) findViewById(R.id.hard_button);

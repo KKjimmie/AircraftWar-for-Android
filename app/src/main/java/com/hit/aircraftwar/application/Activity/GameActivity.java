@@ -23,6 +23,7 @@ import com.hit.aircraftwar.bullet.BaseBullet;
 import com.hit.aircraftwar.factory.BossFactory;
 import com.hit.aircraftwar.factory.EliteEnemyFactory;
 import com.hit.aircraftwar.factory.MobEnemyFactory;
+import com.hit.aircraftwar.music.MySoundPool;
 import com.hit.aircraftwar.props.AbstractProp;
 import com.hit.aircraftwar.props.BombProp;
 
@@ -234,6 +235,7 @@ public class GameActivity extends AppCompatActivity {
         heroBullets.addAll(heroAircraft.shoot());
 //        // TODO:英雄射击音效
 //        MusicController.setBulletBgm();
+//        MySoundPool.playSound(MySoundPool.BULLET, false);
     }
 
     /**
@@ -280,6 +282,7 @@ public class GameActivity extends AppCompatActivity {
             }
             if (heroAircraft.crash(bullet)) {
 //                MusicController.setBulletHitBgm();
+                MySoundPool.playSound(MySoundPool.BULLET_HIT, false);
                 heroAircraft.decreaseHp(bullet.getPower());
                 if(Settings.getInstance().isDecreaseShootNum && heroAircraft.getShootNum() > 1){
                     heroAircraft.decreaseShootNum();
@@ -302,6 +305,7 @@ public class GameActivity extends AppCompatActivity {
                 if (enemyAircraft.crash(bullet)) {
                     // TODO:播放音乐
 //                    MusicController.setBulletHitBgm();
+                    MySoundPool.playSound(MySoundPool.BULLET_HIT, false);
                     // 敌机撞击到英雄机子弹
                     // 敌机损失一定生命值
                     enemyAircraft.decreaseHp(bullet.getPower());
@@ -340,6 +344,7 @@ public class GameActivity extends AppCompatActivity {
             if (heroAircraft.crash(prop)){
                 // TODO:播放吃到道具音效
 //                MusicController.setGetSupplyBgm();
+                MySoundPool.playSound(MySoundPool.GET_SUPPLY, false);
                 // 吃到道具加分
                 score += 10;
                 if (prop instanceof BombProp){
