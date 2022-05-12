@@ -42,6 +42,7 @@ public class MySoundPool {
 
     }
 
+
     public static void playSound(int sound, boolean isloop){
         AudioManager am = (AudioManager) MainActivity.mContext.getSystemService(Context.AUDIO_SERVICE);
         float audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
