@@ -60,7 +60,7 @@ public class Settings {
     public int eliteEnemySpeedY = 8;
     public int eliteEnemyPower = 10;
     public int eliteShootNum = 1;
-//    public final int maxEliteShootNum = 3;
+    public final int maxEliteShootNum = 3;
     public final int maxEliteSpeedY = 8;
     public final int maxEliteSpeedX = 10;
 

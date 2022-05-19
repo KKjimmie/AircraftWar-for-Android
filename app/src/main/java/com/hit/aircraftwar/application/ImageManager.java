@@ -32,7 +32,11 @@ public class ImageManager {
      */
     private static final Map<String, Bitmap> CLASSNAME_IMAGE_MAP = new HashMap<>();
 
-    public static Bitmap BACKGROUND_IMAGE = getBitmap(R.drawable.bg);
+    public static Bitmap BACKGROUND_IMAGE_1 = getBitmap(R.drawable.bg);
+    public static Bitmap BACKGROUND_IMAGE_2 = getBitmap(R.drawable.bg2);
+    public static Bitmap BACKGROUND_IMAGE_3 = getBitmap(R.drawable.bg3);
+    public static Bitmap BACKGROUND_IMAGE_4 = getBitmap(R.drawable.bg4);
+    public static Bitmap BACKGROUND_IMAGE_5 = getBitmap(R.drawable.bg5);
     public static Bitmap HERO_BITMAP = getBitmap(R.drawable.hero);
     public static Bitmap BOSS_BITMAP = getBitmap(R.drawable.boss);
     public static Bitmap MOB_ENEMY_BITMAP = getBitmap(R.drawable.mob);

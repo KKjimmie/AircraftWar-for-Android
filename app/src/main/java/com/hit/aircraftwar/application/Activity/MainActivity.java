@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         easyButton.setOnClickListener(
                 view -> {
                     Toast.makeText(this,R.string.easy_toast,Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, GameActivity.class);
+                    Intent intent = new Intent(MainActivity.this, EasyGameActivity.class);
                     startActivity(intent);
                 });
 
@@ -68,11 +68,17 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         commonButton.setOnClickListener(
                 view -> {
                     Toast.makeText(this,R.string.common_toast,Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, CommonGameActivity.class);
+                    startActivity(intent);
                 });
 
         hardButton = (Button) findViewById(R.id.hard_button);
         hardButton.setOnClickListener(
-                view -> Toast.makeText(this, R.string.hard_toast, Toast.LENGTH_SHORT).show());
+                view -> {
+                    Toast.makeText(this, R.string.hard_toast, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, HardGameActivity.class);
+                    startActivity(intent);
+                });
         soundCheckBox = (CheckBox) findViewById(R.id.sound_check_box);
         soundCheckBox.setOnCheckedChangeListener(this);
 

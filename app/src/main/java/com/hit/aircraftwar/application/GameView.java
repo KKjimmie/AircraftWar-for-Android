@@ -96,15 +96,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     {
         while (isDrawing){
             draw();
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
-    private int backgroundTop = 0;
+
     Bitmap bitmap;
     private void draw()
     {
@@ -117,15 +112,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
             synchronized (mSurfaceHolder)
             {
                 // 这里进行内容的绘制
-                // 绘制背景,图片滚动
-                bitmap = BitmapFactory.decodeResource(getResources(), bg);
-                mCanvas.drawBitmap(bitmap, 0, backgroundTop - screenHeight, paint);
-                mCanvas.drawBitmap(bitmap, 0, backgroundTop, paint);
-                backgroundTop += 5;
-                if (backgroundTop >= screenHeight)
-                {
-                    backgroundTop -= screenHeight;
-                }
+                paintBackground();
 
                 // 先绘制子弹和道具，后绘制飞机
                 // 这样子弹显示在飞机的下层
@@ -146,6 +133,21 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
             e.printStackTrace();
         }
         mSurfaceHolder.unlockCanvasAndPost(mCanvas);
+    }
+
+    private int backgroundTop = 0;
+    /**
+     * 绘制背景，图片滚动
+     */
+    private void paintBackground(){
+        bitmap = BitmapFactory.decodeResource(getResources(), bg);
+        mCanvas.drawBitmap(bitmap, 0, backgroundTop - screenHeight, paint);
+        mCanvas.drawBitmap(bitmap, 0, backgroundTop, paint);
+        backgroundTop += 5;
+        if (backgroundTop >= screenHeight)
+        {
+            backgroundTop -= screenHeight;
+        }
     }
 
     private void paintImageWithPositionRevised(List<? extends AbstractFlyingObject> objects)

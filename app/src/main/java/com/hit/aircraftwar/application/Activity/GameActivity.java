@@ -1,6 +1,7 @@
 package com.hit.aircraftwar.application.Activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.hit.aircraftwar.aircraft.Boss;
 import com.hit.aircraftwar.aircraft.EliteEnemy;
 import com.hit.aircraftwar.aircraft.HeroAircraft;
 import com.hit.aircraftwar.application.GameView;
+import com.hit.aircraftwar.application.ImageManager;
 import com.hit.aircraftwar.application.Settings;
 import com.hit.aircraftwar.basic.AbstractFlyingObject;
 import com.hit.aircraftwar.basic.CanBoom;
@@ -34,42 +36,59 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class GameActivity extends AppCompatActivity {
+public abstract class GameActivity extends AppCompatActivity {
 
     /**
      * 时间间隔(ms)，控制刷新频率
      */
-    private int timeInterval = 40;
+    protected int timeInterval = 40;
 
-    private HeroAircraft heroAircraft;
-    private List<AbstractAircraft> enemyAircrafts;
-    private List<BaseBullet> heroBullets;
-    private List<BaseBullet> enemyBullets;
-    private List<AbstractProp> props;
+    protected HeroAircraft heroAircraft;
+    protected List<AbstractAircraft> enemyAircrafts;
+    protected List<BaseBullet> heroBullets;
+    protected List<BaseBullet> enemyBullets;
+    protected List<AbstractProp> props;
 
-    private int enemyMaxNumber = 5;
+    protected int enemyMaxNumber = 5;
 
-    private boolean gameOverFlag = false;
+    protected boolean gameOverFlag = false;
     protected boolean bossExistFlag = false; // 标志Boss是否存在
     public static int score = 0;
-    private int time = 0;
+    protected int time = 0;
     /**
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
      */
-    private int cycleDuration = 600;
-    private int cycleTime = 0;
+    protected int cycleDuration = 600;
+    protected int cycleTime = 0;
     /**
      * 创建三个工厂实例
      */
     protected final MobEnemyFactory mobEnemyFactory = new MobEnemyFactory();
     protected final EliteEnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
     protected final BossFactory bossFactory = new BossFactory();
-    private GameView gameView;
+    protected GameView gameView;
+
+    public Bitmap background = ImageManager.BACKGROUND_IMAGE_1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initGame();
+        action();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        heroAircraft.setLocation((int)event.getRawX(),(int)(event.getRawY() - 100));
+        return true;
+    }
+
+
+    /**
+     * 初始化相关设置
+     */
+    protected void initGame() {
         // 设置全屏显示
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -84,16 +103,8 @@ public class GameActivity extends AppCompatActivity {
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         props = new LinkedList<>();
-//        Log.d("1111111111","1111111111111");
         gameView = new GameView(this, R.drawable.bg, heroAircraft, enemyAircrafts, heroBullets, enemyBullets, props);
         setContentView(gameView);
-        action();
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        heroAircraft.setLocation((int)event.getRawX(),(int)(event.getRawY() - 100));
-        return true;
     }
 
     // 游戏入口
@@ -155,8 +166,6 @@ public class GameActivity extends AppCompatActivity {
         MainActivity.executorService.scheduleWithFixedDelay(task, timeInterval, timeInterval, TimeUnit.MILLISECONDS);
     }
 
-
-
     /**
      * 初始化游戏相关参数设置
      */
@@ -205,7 +214,6 @@ public class GameActivity extends AppCompatActivity {
             }else if (enemyAircrafts.size() < enemyMaxNumber){
                 enemyAircrafts.add(mobEnemyFactory.produceEnemy());
             }
-            Log.d("1111111111","1111111111111");
         }
     }
 
@@ -234,7 +242,6 @@ public class GameActivity extends AppCompatActivity {
         // 英雄射击
         heroBullets.addAll(heroAircraft.shoot());
 //        // TODO:英雄射击音效
-//        MusicController.setBulletBgm();
 //        MySoundPool.playSound(MySoundPool.BULLET, false);
     }
 
