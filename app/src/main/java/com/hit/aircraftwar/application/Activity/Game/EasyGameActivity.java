@@ -1,4 +1,4 @@
-package com.hit.aircraftwar.application.Activity;
+package com.hit.aircraftwar.application.Activity.Game;
 
 import com.hit.aircraftwar.application.ImageManager;
 import com.hit.aircraftwar.application.Settings;
@@ -6,6 +6,7 @@ import com.hit.aircraftwar.application.Settings;
 public class EasyGameActivity extends GameActivity{
     @Override
     protected void initGameMode() {
+        Settings.getInstance().reset();
         // 获取背景
         background = ImageManager.BACKGROUND_IMAGE_1;
         // 英雄机

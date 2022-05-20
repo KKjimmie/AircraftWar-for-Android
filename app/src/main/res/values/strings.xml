@@ -8,4 +8,5 @@
     <string name="common_toast">COMMON MODE</string>
     <string name="hard_toast">HARD MODE</string>
     <string name="sound">音效</string>
+    <string name="exit">EXIT</string>
 </resources>

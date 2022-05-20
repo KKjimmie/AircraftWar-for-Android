@@ -1,22 +1,24 @@
-package com.hit.aircraftwar.application.Activity;
-
-import android.os.Bundle;
+package com.hit.aircraftwar.application.Activity.Game;
 
 import com.hit.aircraftwar.aircraft.HeroAircraft;
 import com.hit.aircraftwar.application.ImageManager;
 import com.hit.aircraftwar.application.Settings;
 
+import java.util.Set;
+
 public class HardGameActivity extends GameActivity{
 
     @Override
     protected void initGameMode() {
+        Settings.getInstance().reset();
+
         // 获取背景
         background = ImageManager.BACKGROUND_IMAGE_5;
 
         Settings.getInstance().enemyMaxNumber = 10;
         // 英雄机
-        HeroAircraft.getInstance().setHeroHp(5000);
         HeroAircraft.getInstance().setShootNum(1);
+        Settings.getInstance().heroHp = 5000;
         Settings.getInstance().bulletSpeedY = 15;
         Settings.getInstance().enemyMaxNumber = 10;
         Settings.getInstance().isDecreaseShootNum = true;

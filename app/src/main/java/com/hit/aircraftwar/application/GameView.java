@@ -11,7 +11,7 @@ import android.view.SurfaceView;
 
 import com.hit.aircraftwar.aircraft.AbstractAircraft;
 import com.hit.aircraftwar.aircraft.HeroAircraft;
-import com.hit.aircraftwar.application.Activity.GameActivity;
+import com.hit.aircraftwar.application.Activity.Game.GameActivity;
 import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.basic.AbstractFlyingObject;
 import com.hit.aircraftwar.bullet.BaseBullet;
@@ -41,7 +41,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private List<BaseBullet> heroBullets;
     private List<BaseBullet> enemyBullets;
     private List<AbstractProp> props;
-    private int bg;
+    public static int background;
+//    public static Bitmap background;
 
     public GameView(Context context, int bg, HeroAircraft heroAircraft, List<AbstractAircraft> enemyAircrafts, List<BaseBullet> heroBullets, List<BaseBullet> enemyBullets, List<AbstractProp> props)
     {
@@ -52,7 +53,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         this.heroBullets = heroBullets;
         this.enemyBullets = enemyBullets;
         this.props = props;
-        this.bg = bg;
+        GameView.background = bg;
 
         init();
     }
@@ -140,7 +141,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
      * 绘制背景，图片滚动
      */
     private void paintBackground(){
-        bitmap = BitmapFactory.decodeResource(getResources(), bg);
+        bitmap = BitmapFactory.decodeResource(getResources(), background);
         mCanvas.drawBitmap(bitmap, 0, backgroundTop - screenHeight, paint);
         mCanvas.drawBitmap(bitmap, 0, backgroundTop, paint);
         backgroundTop += 5;

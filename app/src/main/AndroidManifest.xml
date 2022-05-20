@@ -11,15 +11,15 @@
         android:theme="@style/Theme.AircraftWar">
         <activity
             android:screenOrientation="sensorPortrait"
-            android:name=".application.Activity.EasyGameActivity"
+            android:name=".application.Activity.Game.EasyGameActivity"
             android:exported="false" />
         <activity
             android:screenOrientation="sensorPortrait"
-            android:name=".application.Activity.CommonGameActivity"
+            android:name=".application.Activity.Game.CommonGameActivity"
             android:exported="false" />
         <activity
             android:screenOrientation="sensorPortrait"
-            android:name=".application.Activity.HardGameActivity"
+            android:name=".application.Activity.Game.HardGameActivity"
             android:exported="false" />
         <activity
             android:name=".application.Activity.MainActivity"

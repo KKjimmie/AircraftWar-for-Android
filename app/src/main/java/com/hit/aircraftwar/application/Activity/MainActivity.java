@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.WindowManager;
@@ -14,7 +16,9 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.hit.aircraftwar.R;
-import com.hit.aircraftwar.music.MySoundPool;
+import com.hit.aircraftwar.application.Activity.Game.CommonGameActivity;
+import com.hit.aircraftwar.application.Activity.Game.EasyGameActivity;
+import com.hit.aircraftwar.application.Activity.Game.HardGameActivity;
 
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private Button easyButton;
     private Button commonButton;
     private Button hardButton;
+    private Button exitButton;
     private CheckBox soundCheckBox;
 
     public static int width;
@@ -33,6 +38,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     public static MainActivity baseActivity;//传递给非activity的类使用
     public static Context mContext;//传递给非activity的类使用
+
+    // 定义一个变量，来标识是否退出
+    private static boolean isExit = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +88,14 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     Intent intent = new Intent(MainActivity.this, HardGameActivity.class);
                     startActivity(intent);
                 });
+        exitButton = (Button) findViewById(R.id.exit_button);
+        exitButton.setOnClickListener(
+                view ->{
+                    Intent MyIntent = new Intent(Intent.ACTION_MAIN);
+                    MyIntent.addCategory(Intent.CATEGORY_HOME);
+                    startActivity(MyIntent);
+                    finish();
+        });
         soundCheckBox = (CheckBox) findViewById(R.id.sound_check_box);
         soundCheckBox.setOnCheckedChangeListener(this);
 
@@ -93,27 +110,34 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         }
     }
 
-    // TODO:返回桌面
+    Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            isExit = false;
+        }
+    };
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        AtomicReference<Boolean> back = new AtomicReference<>(false);
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
-                    .setTitle("退出游戏？")
-                    .setMessage("是否退出游戏。")
-                    .setIcon(R.drawable.hero)
-                    .setPositiveButton("确定", (dialog, which) -> {back.set(true); })
-                    .setNegativeButton("取消", (dialog, which) -> {back.set(false);})
-                    .create();
-            alertDialog.show();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
         }
-        if (back.get()){
-            // TODO:实现结束进程返回桌面
-//            Intent home = new Intent(Intent.ACTION_MAIN);
-//            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            home.addCategory(Intent.CATEGORY_HOME);
-//            startActivity(home);
-        }
-        return back.get();
+        return super.onKeyDown(keyCode, event);
     }
+
+    private void exit() {
+        if (!isExit) {
+            isExit = true;
+            Toast.makeText(getApplicationContext(), "再按一次退出游戏",
+                    Toast.LENGTH_SHORT).show();
+            // 利用handler延迟发送更改状态信息
+            mHandler.sendEmptyMessageDelayed(0, 2000);
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
+
 }

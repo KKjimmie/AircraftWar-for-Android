@@ -1,7 +1,6 @@
-package com.hit.aircraftwar.application.Activity;
+package com.hit.aircraftwar.application.Activity.Game;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -16,8 +15,8 @@ import com.hit.aircraftwar.aircraft.AbstractAircraft;
 import com.hit.aircraftwar.aircraft.Boss;
 import com.hit.aircraftwar.aircraft.EliteEnemy;
 import com.hit.aircraftwar.aircraft.HeroAircraft;
+import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.application.GameView;
-import com.hit.aircraftwar.application.ImageManager;
 import com.hit.aircraftwar.application.Settings;
 import com.hit.aircraftwar.basic.AbstractFlyingObject;
 import com.hit.aircraftwar.basic.CanBoom;
@@ -41,7 +40,7 @@ public abstract class GameActivity extends AppCompatActivity {
     /**
      * 时间间隔(ms)，控制刷新频率
      */
-    protected int timeInterval = 40;
+    protected int timeInterval = Settings.getInstance().timeInterval;
 
     protected HeroAircraft heroAircraft;
     protected List<AbstractAircraft> enemyAircrafts;
@@ -69,11 +68,12 @@ public abstract class GameActivity extends AppCompatActivity {
     protected final BossFactory bossFactory = new BossFactory();
     protected GameView gameView;
 
-    public Bitmap background = ImageManager.BACKGROUND_IMAGE_1;
-
+//    public int background = ImageManager.BACKGROUND_IMAGE_1;
+    public int background;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initGameMode();
         initGame();
         action();
     }
@@ -103,13 +103,12 @@ public abstract class GameActivity extends AppCompatActivity {
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
         props = new LinkedList<>();
-        gameView = new GameView(this, R.drawable.bg, heroAircraft, enemyAircrafts, heroBullets, enemyBullets, props);
+        gameView = new GameView(this, background, heroAircraft, enemyAircrafts, heroBullets, enemyBullets, props);
         setContentView(gameView);
     }
 
     // 游戏入口
     public void action() {
-        initGameMode();
 
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
@@ -477,89 +476,4 @@ public abstract class GameActivity extends AppCompatActivity {
         }
         else return false;
     }
-
-
-
-
-
-    //***********************
-    //      Paint 各部分
-    //***********************
-
-//    /**
-//     * 重写paint方法
-//     * 通过重复调用paint方法，实现游戏动画
-//     *
-//     * @param  g
-//     */
-//    @Override
-//    public void paint(Graphics g) {
-//        super.paint(g);
-//
-//        // 绘制背景,图片滚动
-//        g.drawImage(backGround, 0, this.backGroundTop - MainFrame.WINDOW_HEIGHT, null);
-//        g.drawImage(backGround, 0, this.backGroundTop, null);
-//        this.backGroundTop += 1;
-//        if (this.backGroundTop == MainFrame.WINDOW_HEIGHT) {
-//            this.backGroundTop = 0;
-//        }
-//
-//        // 先绘制子弹，后绘制飞机
-//        // 这样子弹显示在飞机的下层
-//        paintImageWithPositionRevised(g, enemyBullets);
-//        paintImageWithPositionRevised(g, heroBullets);
-//
-//        paintImageWithPositionRevised(g, enemyAircrafts);
-//        paintImageWithPositionRevised(g, props);
-//
-//        // 绘制敌机爆炸动画
-//        paintVanish(g);
-//
-//        g.drawImage(ImageManager.HERO_IMAGE, heroAircraft.getLocationX() - ImageManager.HERO_IMAGE.getWidth() / 2,
-//                heroAircraft.getLocationY() - ImageManager.HERO_IMAGE.getHeight() / 2, null);
-//
-//        //绘制得分和生命值
-//        paintScoreAndLife(g);
-//    }
-//
-//    /**
-//     * 绘制敌机爆炸动画,并对敌机进行后处理
-//     * @param g
-//     */
-//    private void paintVanish(Graphics g){
-//        for (var enemyAircraft : enemyAircrafts) {
-//            if (enemyAircraft.notValid()){
-//                g.drawImage(ImageManager.VANISH_IMAGES,
-//                        enemyAircraft.getLocationX() - enemyAircraft.getWidth()/2,
-//                        enemyAircraft.getLocationY() - enemyAircraft.getHeight()/2,
-//                        null);
-//            }
-//        }
-//        enemyAircrafts.removeIf(AbstractFlyingObject::notValid);
-//    }
-//
-//    private void paintImageWithPositionRevised(Graphics g, List<? extends AbstractFlyingObject> objects) {
-//        if (objects.size() == 0) {
-//            return;
-//        }
-//
-//        for (AbstractFlyingObject object : objects) {
-//            BufferedImage image = object.getImage();
-//            assert image != null : objects.getClass().getName() + " has no image! ";
-//            g.drawImage(image, object.getLocationX() - image.getWidth() / 2,
-//                    object.getLocationY() - image.getHeight() / 2, null);
-//        }
-//    }
-//
-//    private void paintScoreAndLife(Graphics g) {
-//        int x = 10;
-//        int y = 25;
-//        g.setColor(new Color(16711680));
-//        g.setFont(new Font("SansSerif", Font.BOLD, 22));
-//        g.drawString("SCORE:" + this.score, x, y);
-//        y = y + 20;
-//        g.drawString("LIFE:" + this.heroAircraft.getHp(), x, y);
-//    }
-//
-//}
 }

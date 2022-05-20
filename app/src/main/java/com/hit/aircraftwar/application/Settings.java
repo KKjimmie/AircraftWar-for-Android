@@ -24,7 +24,7 @@ public class Settings {
     private boolean isSoundOn = SOUND_ON;
 
     // 相关设置
-    public int timeInterval = 40;
+    public int timeInterval = 20;
     public int enemyMaxNumber = 5;
     public int cycleDuration = 600;
     public int timeToElite = 15 * cycleDuration;
@@ -48,16 +48,16 @@ public class Settings {
      */
     public int mobEnemyHp = 30;
     public int mobEnemySpeedX = 0;
-    public int mobEnemySpeedY = 10;
-    public final int maxMobSpeedY = 20;
+    public int mobEnemySpeedY = 5;
+    public final int maxMobSpeedY = 10;
 
     /*
      * 精英敌机设置
      */
     public int eliteEnemyHp = 60;
     public final int maxEliteHp = 100;
-    public int eliteEnemySpeedX = 10;
-    public int eliteEnemySpeedY = 8;
+    public int eliteEnemySpeedX = 5;
+    public int eliteEnemySpeedY = 4;
     public int eliteEnemyPower = 10;
     public int eliteShootNum = 1;
     public final int maxEliteShootNum = 3;
@@ -68,7 +68,6 @@ public class Settings {
      * Boss机设置
      */
     public boolean isLeverUp = false;
-    public double bossHpIncreaseRate = 1.0;
     public int bossHp = 600;
     public int bossSpeedX = 5;
     public int bossSpeedY = 0;
@@ -79,8 +78,8 @@ public class Settings {
     /*
      * 道具设置
      */
-    public int propSpeedX = 5;
-    public int propSpeedY = 10;
+    public int propSpeedX = 3;
+    public int propSpeedY = 5;
     /**
      * 道具y轴反弹次数
      */
@@ -179,5 +178,60 @@ public class Settings {
      */
     public boolean getVideoState() {
         return isSoundOn;
+    }
+
+    /**
+     * 重置游戏设置
+     */
+    public void reset(){
+        /*
+         * 英雄机设置
+         */
+        heroHp = Integer.MAX_VALUE;
+        maxHeroHp = Integer.MAX_VALUE;
+        heroSpeedX = 0;
+        heroSpeedY = 0;
+        heroPower = 30;
+        initShootNum = 3;
+        maxShootNum = 3;
+        isDecreaseShootNum = false;
+
+        /*
+         * 普通敌机设置
+         */
+        mobEnemyHp = 30;
+        mobEnemySpeedX = 0;
+        mobEnemySpeedY = 5;
+
+        /*
+         * 精英敌机设置
+         */
+        eliteEnemyHp = 60;
+        eliteEnemySpeedX = 5;
+        eliteEnemySpeedY = 4;
+        eliteEnemyPower = 10;
+        eliteShootNum = 1;
+
+        /*
+         * Boss机设置
+         */
+        isLeverUp = false;
+        bossHp = 600;
+        bossSpeedX = 5;
+        bossSpeedY = 0;
+        scoreToBoss = 500;
+        bossPower = 10;
+        /*
+         * 道具设置
+         */
+        propSpeedX = 3;
+        propSpeedY = 5;
+        propBounceNum = 0;
+        propDropRate = 0.9;
+        bulletPlus = 1;
+        hpPlus = 10;
+        baseBulletPower = 10;
+        bulletSpeedY = 10;
+
     }
 }

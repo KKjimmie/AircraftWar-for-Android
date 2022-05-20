@@ -28,9 +28,9 @@ public class DirectShoot implements ShootStrategy {
             // 子弹发射位置相对飞机位置向前偏移
             // 多个子弹横向分散
             if(isHero){
-                baseBullet = new HeroBullet(x + (i*2 - shootNum + 1)*10, y,  speedX, speedY, power);
+                baseBullet = new HeroBullet(x + (i*2 - shootNum + 1)*15, y,  speedX, speedY, power);
             }else{
-                baseBullet = new EnemyBullet(x + (i*2 - shootNum + 1)*10, y,  speedX, speedY*2, power);
+                baseBullet = new EnemyBullet(x + (i*2 - shootNum + 1)*15, y,  speedX, speedY*2, power);
             }
             res.add(baseBullet);
         }
