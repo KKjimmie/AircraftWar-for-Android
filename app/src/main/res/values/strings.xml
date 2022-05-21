@@ -9,4 +9,8 @@
     <string name="hard_toast">HARD MODE</string>
     <string name="sound">音效</string>
     <string name="exit">EXIT</string>
+    <string name="rank">排行榜</string>
+    <string name="game_name">飞机大战</string>
+    <string name="record">记录数据</string>
+    <string name="show_record">显示排行榜</string>
 </resources>

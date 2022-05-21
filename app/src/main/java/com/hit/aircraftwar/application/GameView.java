@@ -42,7 +42,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private List<BaseBullet> enemyBullets;
     private List<AbstractProp> props;
     public static int background;
-//    public static Bitmap background;
 
     public GameView(Context context, int bg, HeroAircraft heroAircraft, List<AbstractAircraft> enemyAircrafts, List<BaseBullet> heroBullets, List<BaseBullet> enemyBullets, List<AbstractProp> props)
     {
@@ -67,15 +66,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         this.setKeepScreenOn(true);
         //设置是否抗锯齿
         paint.setAntiAlias(true);
-        // 处理屏幕闪烁问题
+        // 处理屏幕闪烁问题？
         paint.setDither(true);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder)
-    {//创建
+    {
+        //创建
         isDrawing = true;
-        MainActivity.executorService.schedule(this, 0, TimeUnit.MILLISECONDS);
+        // 开启子线程
+        thread = new Thread(this);
+        thread.start();
     }
 
     @Override
@@ -107,9 +109,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         try
         {
             mCanvas = mSurfaceHolder.lockCanvas();
-            if(mSurfaceHolder == null || mCanvas == null){
-                return;
-            }
             synchronized (mSurfaceHolder)
             {
                 // 这里进行内容的绘制
@@ -132,8 +131,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         catch (Exception e)
         {
             e.printStackTrace();
+        }finally {
+            if(mCanvas != null){
+                mSurfaceHolder.unlockCanvasAndPost(mCanvas);
+            }
         }
-        mSurfaceHolder.unlockCanvasAndPost(mCanvas);
+
     }
 
     private int backgroundTop = 0;
@@ -157,10 +160,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         {
             return;
         }
-        for (AbstractFlyingObject object : objects)
+        for (int i = 0; i < objects.size(); i ++)
         {
-            bitmap = object.getBitmap();
-            mCanvas.drawBitmap(bitmap, object.getLocationX() - bitmap.getWidth() / 2, object.getLocationY() - bitmap.getHeight() / 2, paint);
+            bitmap = objects.get(i).getBitmap();
+            mCanvas.drawBitmap(bitmap, (float) (objects.get(i).getLocationX() - bitmap.getWidth() / 2.0),
+                    (float) (objects.get(i).getLocationY() - bitmap.getHeight() / 2.0), paint);
         }
     }
 

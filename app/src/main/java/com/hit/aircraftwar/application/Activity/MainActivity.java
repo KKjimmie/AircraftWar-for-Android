@@ -19,6 +19,7 @@ import com.hit.aircraftwar.R;
 import com.hit.aircraftwar.application.Activity.Game.CommonGameActivity;
 import com.hit.aircraftwar.application.Activity.Game.EasyGameActivity;
 import com.hit.aircraftwar.application.Activity.Game.HardGameActivity;
+import com.hit.aircraftwar.application.Settings;
 
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         easyButton.setOnClickListener(
                 view -> {
                     Toast.makeText(this,R.string.easy_toast,Toast.LENGTH_SHORT).show();
+                    Settings.getInstance().setGameMode(Settings.EASY_MODE);
                     Intent intent = new Intent(MainActivity.this, EasyGameActivity.class);
                     startActivity(intent);
                 });
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         commonButton.setOnClickListener(
                 view -> {
                     Toast.makeText(this,R.string.common_toast,Toast.LENGTH_SHORT).show();
+                    Settings.getInstance().setGameMode(Settings.COMMON_MODE);
                     Intent intent = new Intent(MainActivity.this, CommonGameActivity.class);
                     startActivity(intent);
                 });
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         hardButton.setOnClickListener(
                 view -> {
                     Toast.makeText(this, R.string.hard_toast, Toast.LENGTH_SHORT).show();
+                    Settings.getInstance().setGameMode(Settings.HARD_MODE);
                     Intent intent = new Intent(MainActivity.this, HardGameActivity.class);
                     startActivity(intent);
                 });
@@ -95,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     MyIntent.addCategory(Intent.CATEGORY_HOME);
                     startActivity(MyIntent);
                     finish();
+                    System.exit(0);
         });
         soundCheckBox = (CheckBox) findViewById(R.id.sound_check_box);
         soundCheckBox.setOnCheckedChangeListener(this);
@@ -104,8 +109,10 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         if(compoundButton.isChecked()){
+            Settings.getInstance().setSoundOn();
             Toast.makeText(this, "音效开",Toast.LENGTH_SHORT).show();
         }else if(! compoundButton.isChecked()){
+            Settings.getInstance().setSoundOff();
             Toast.makeText(this, "音效关",Toast.LENGTH_SHORT).show();
         }
     }

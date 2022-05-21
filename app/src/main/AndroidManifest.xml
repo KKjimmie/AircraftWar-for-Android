@@ -10,17 +10,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AircraftWar">
         <activity
-            android:screenOrientation="sensorPortrait"
+            android:name=".rank.RankActivity"
+            android:exported="false" />
+        <activity
             android:name=".application.Activity.Game.EasyGameActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="sensorPortrait" />
         <activity
-            android:screenOrientation="sensorPortrait"
             android:name=".application.Activity.Game.CommonGameActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="sensorPortrait" />
         <activity
-            android:screenOrientation="sensorPortrait"
             android:name=".application.Activity.Game.HardGameActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".application.Activity.MainActivity"
             android:exported="true">

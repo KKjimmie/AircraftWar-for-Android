@@ -12,7 +12,7 @@
         android:layout_width="205dp"
         android:layout_height="155dp"
         android:gravity="center_horizontal"
-        android:text="飞机大战"
+        android:text="@string/game_name"
         android:textColor="#770B0B"
         android:textSize="30dp"
         android:textStyle="bold" />

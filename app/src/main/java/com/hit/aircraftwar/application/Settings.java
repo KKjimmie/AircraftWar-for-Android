@@ -145,13 +145,13 @@ public class Settings {
         String diff;
         switch (gameMode){
             case EASY_MODE:
-                diff = "EASY";
+                diff = "easy";
                 break;
             case COMMON_MODE:
-                diff = "COMMON";
+                diff = "common";
                 break;
             case HARD_MODE:
-                diff = "HARD";
+                diff = "hard";
                 break;
             default: diff = null;
         }

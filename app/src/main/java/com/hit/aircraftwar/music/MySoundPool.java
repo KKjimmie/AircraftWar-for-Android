@@ -11,6 +11,7 @@ import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.application.Settings;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class MySoundPool {
 
@@ -44,15 +45,20 @@ public class MySoundPool {
 
 
     public static void playSound(int sound, boolean isloop){
-        AudioManager am = (AudioManager) MainActivity.mContext.getSystemService(Context.AUDIO_SERVICE);
-        float audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        float volumnCurrent = am.getStreamVolume(AudioManager.STREAM_MUSIC);
-        float volumnRatio = volumnCurrent / audioMaxVolumn;
-        // 循环次数
-        int loopNum;
-        if(isloop){
-            loopNum = -1;
-        }else loopNum = 0;
-        soundPool.play(soundData.get(sound), volumnRatio,volumnRatio , 1, loopNum, 1);
+        if(! Settings.getInstance().getVideoState()){
+            return;
+        }
+        new Thread(() -> {
+            AudioManager am = (AudioManager) MainActivity.mContext.getSystemService(Context.AUDIO_SERVICE);
+            float audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            float volumnCurrent = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+            float volumnRatio = volumnCurrent / audioMaxVolumn;
+            // 循环次数
+            int loopNum;
+            if(isloop){
+                loopNum = -1;
+            }else loopNum = 0;
+            soundPool.play(soundData.get(sound), volumnRatio,volumnRatio , 1, loopNum, 1);
+        }).start();
     }
 }

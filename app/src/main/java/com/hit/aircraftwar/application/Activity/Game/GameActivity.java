@@ -1,5 +1,6 @@
 package com.hit.aircraftwar.application.Activity.Game;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -27,8 +28,10 @@ import com.hit.aircraftwar.factory.MobEnemyFactory;
 import com.hit.aircraftwar.music.MySoundPool;
 import com.hit.aircraftwar.props.AbstractProp;
 import com.hit.aircraftwar.props.BombProp;
+import com.hit.aircraftwar.rank.RankActivity;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -50,7 +53,7 @@ public abstract class GameActivity extends AppCompatActivity {
 
     protected int enemyMaxNumber = 5;
 
-    protected boolean gameOverFlag = false;
+    public static boolean gameOverFlag = false;
     protected boolean bossExistFlag = false; // 标志Boss是否存在
     public static int score = 0;
     protected int time = 0;
@@ -67,8 +70,7 @@ public abstract class GameActivity extends AppCompatActivity {
     protected final EliteEnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
     protected final BossFactory bossFactory = new BossFactory();
     protected GameView gameView;
-
-//    public int background = ImageManager.BACKGROUND_IMAGE_1;
+    // 背景图片
     public int background;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +98,7 @@ public abstract class GameActivity extends AppCompatActivity {
 
         // 重置一下分数
         score = 0;
+        gameOverFlag = false;
         heroAircraft = HeroAircraft.getInstance();
         // 由于英雄机为单例模式，因此需要重置一下英雄机设置
         HeroAircraft.getInstance().resetHeroAircraft();
@@ -144,15 +147,7 @@ public abstract class GameActivity extends AppCompatActivity {
             // 后处理
             this.postProcessAction();
 
-            //每个时刻重绘界面
-            //            this.repaint();
-
-            // 游戏结束检查以及打印排行榜
-            //        try {
-            //            this.isGameOver();
-            //        } catch (IOException e) {
-            //            e.printStackTrace();
-            //        }
+            // 游戏结束检查
             this.isGameOver();
 
             // 难度提升
@@ -240,8 +235,7 @@ public abstract class GameActivity extends AppCompatActivity {
 
         // 英雄射击
         heroBullets.addAll(heroAircraft.shoot());
-//        // TODO:英雄射击音效
-//        MySoundPool.playSound(MySoundPool.BULLET, false);
+        MySoundPool.playSound(MySoundPool.BULLET, false);
     }
 
     /**
@@ -287,7 +281,6 @@ public abstract class GameActivity extends AppCompatActivity {
                 continue;
             }
             if (heroAircraft.crash(bullet)) {
-//                MusicController.setBulletHitBgm();
                 MySoundPool.playSound(MySoundPool.BULLET_HIT, false);
                 heroAircraft.decreaseHp(bullet.getPower());
                 if(Settings.getInstance().isDecreaseShootNum && heroAircraft.getShootNum() > 1){
@@ -309,8 +302,6 @@ public abstract class GameActivity extends AppCompatActivity {
                     continue;
                 }
                 if (enemyAircraft.crash(bullet)) {
-                    // TODO:播放音乐
-//                    MusicController.setBulletHitBgm();
                     MySoundPool.playSound(MySoundPool.BULLET_HIT, false);
                     // 敌机撞击到英雄机子弹
                     // 敌机损失一定生命值
@@ -348,8 +339,6 @@ public abstract class GameActivity extends AppCompatActivity {
                 continue;
             }
             if (heroAircraft.crash(prop)){
-                // TODO:播放吃到道具音效
-//                MusicController.setGetSupplyBgm();
                 MySoundPool.playSound(MySoundPool.GET_SUPPLY, false);
                 // 吃到道具加分
                 score += 10;
@@ -378,58 +367,22 @@ public abstract class GameActivity extends AppCompatActivity {
      * 游戏结束检查以及打印排行榜
      */
     private void isGameOver(){
-        if ((heroAircraft.getHp() <= 0 || gameOverFlag))
+        if (heroAircraft.getHp() <= 0)
         {
-            // TODO:gameover音效
+            MySoundPool.playSound(MySoundPool.GAME_OVER, false);
             // 游戏结束
             gameOverFlag = true;
-            gameView.surfaceDestroyed(gameView.getHolder());
+            Intent intent = new Intent(this, RankActivity.class);
+            intent.putExtra("score", score);
+            startActivity(intent);
+        }
+        if(gameOverFlag){
+            finish();
             this.onDestroy();
-//            finish();
+            gameView.surfaceDestroyed(gameView.getHolder());
         }
     }
-//    private void isGameOver() throws IOException {
-//        if (heroAircraft.getHp() <= 0) {
-//            // 游戏结束
-//            executorService.shutdown();
-//            gameOverFlag = true;
-//            MusicController.setGameOverBgm();
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm");
-//            // 弹窗输入姓名
-//            String currentTime = formatter.format(LocalDateTime.now());
-//            String userName = JOptionPane.showInputDialog(null,
-//                    "游戏结束，你的得分为"+score+".\n请输入名字记录得分：", "输入",
-//                    JOptionPane.PLAIN_MESSAGE);
-//            if ("".equals(userName) || userName == null){
-//                userName = "unknown user";
-//            }
-//            RankLine rankList = new RankLine(userName.strip(), score, currentTime);
-//            rankDaoImpl.add(rankList);
-//            printRankings();
-//            System.out.println("Game Over!");
-//        }
-//    }
 
-
-    // TODO
-    /**
-     * 打印排行榜
-     * @throws IOException
-     */
-//    private void printRankings () throws IOException {
-//        // 获取屏幕窗口信息
-//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//        JFrame rankingFrame = new JFrame("排行榜");
-//        rankingFrame.setSize(MainFrame.WINDOW_WIDTH, MainFrame.WINDOW_HEIGHT);
-//        rankingFrame.setResizable(false);
-//        //设置窗口的大小和位置,居中放置
-//        rankingFrame.setBounds(((int) screenSize.getWidth() - MainFrame.WINDOW_WIDTH) / 2, 0,
-//                MainFrame.WINDOW_WIDTH, MainFrame.WINDOW_HEIGHT);
-//        rankingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        rankingFrame.add(new Ranking().mainPanel);
-//        rankingFrame.setVisible(true);
-//    }
 
     /**
      * 后处理：
@@ -468,6 +421,7 @@ public abstract class GameActivity extends AppCompatActivity {
             alertDialog.show();
         }
         if (back.get()){
+            finish();
             this.onDestroy();
             Intent intent = new Intent(GameActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
