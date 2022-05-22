@@ -1,6 +1,5 @@
 package com.hit.aircraftwar.application.Activity.Game;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -30,8 +29,6 @@ import com.hit.aircraftwar.props.AbstractProp;
 import com.hit.aircraftwar.props.BombProp;
 import com.hit.aircraftwar.rank.RankActivity;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -412,6 +409,9 @@ public abstract class GameActivity extends AppCompatActivity {
                     .setIcon(R.drawable.hero)
                     .setPositiveButton("确定", (dialog, which) -> {
                         gameOverFlag = true;
+                        Intent intent = new Intent(GameActivity.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
                         back.set(true);
                         finish();
                     })
@@ -421,11 +421,8 @@ public abstract class GameActivity extends AppCompatActivity {
             alertDialog.show();
         }
         if (back.get()){
-            finish();
             this.onDestroy();
-            Intent intent = new Intent(GameActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
+            gameView.surfaceDestroyed(gameView.getHolder());
             return super.onKeyDown(keyCode, event);
         }
         else return false;

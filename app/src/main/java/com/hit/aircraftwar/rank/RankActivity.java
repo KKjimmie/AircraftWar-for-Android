@@ -1,18 +1,23 @@
 package com.hit.aircraftwar.rank;
 
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.BaseAdapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author 柯嘉铭
@@ -40,6 +46,10 @@ public class RankActivity extends AppCompatActivity {
     private boolean isRecord = false;
     // 排行榜textview
     private TextView textView;
+    // 记录当前时间
+    String currentTime;
+    // 排行榜listView
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +78,29 @@ public class RankActivity extends AppCompatActivity {
 
         // 步骤2：真正创建 / 打开数据库
         writableDatabase = databaseHelper.getWritableDatabase(); // 创建 or 打开 可读/写的数据库
+        // 显示数据库
+        show();
+
+        // 监控listview点击事件
+
+        listView.setOnItemClickListener((adapterView, view, position, id) -> {
+            // 弹窗确认操作
+            AlertDialog alertDialog = new AlertDialog.Builder(RankActivity.this)
+                    .setTitle("删除？")
+                    .setMessage("确定删除这条数据？")
+                    .setIcon(R.drawable.hero)
+                    .setPositiveButton("确定", (dialog, which) -> delete(rankLineList.get(position).getTime()))
+                    .setNegativeButton("取消", null)
+                    .create();
+            alertDialog.show();
+        });
+
     }
 
     /**
      * 记录一条排名信息
      */
-    public void recordRank(View view){
+    public void RECORD(View view){
         if(isRecord){
             Toast.makeText(this, "已经记录过信息了", Toast.LENGTH_SHORT).show();
             return;
@@ -85,18 +112,19 @@ public class RankActivity extends AppCompatActivity {
         values.put("name", "testname");// 后续实现登录后，再获取用户名
         values.put("score", score);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm:ss");
-        String currentTime = formatter.format(LocalDateTime.now());
+        currentTime = formatter.format(LocalDateTime.now());
         values.put("time", currentTime);
         writableDatabase = databaseHelper.getWritableDatabase();
         writableDatabase.insert(Settings.getInstance().getDiff() +"rank", null, values);
         // 标志已经记录过信息
         isRecord = true;
+        show();
     }
 
     /**
      * 展现排行榜信息
      */
-    public void show(View view){
+    public void show(){
         writableDatabase = databaseHelper.getWritableDatabase();
         Cursor cursor = writableDatabase.query(Settings.getInstance().getDiff() +"rank",
                 null, null, null, null, null, null);
@@ -111,37 +139,44 @@ public class RankActivity extends AppCompatActivity {
             rankLineList.add(rankLine);
         }
         Collections.sort(rankLineList);
-        if(cursor != null) {
-            cursor.close();
-        }
+        cursor.close();
         writableDatabase.close();
         // 拿到listview对象
-        ListView listView = (ListView) findViewById(R.id.list_view);
+        listView = (ListView) findViewById(R.id.list_view);
         // 设置适配器
-        listView.setAdapter(new MyAdapter());
+        MyAdapter myAdapter = new MyAdapter(RankActivity.this, R.layout.rank_line, rankLineList);
+        listView.setAdapter(myAdapter);
+    }
+
+    /**
+     * 删除一条排行榜信息
+     */
+    public void delete(String time){
+        writableDatabase = databaseHelper.getWritableDatabase();
+        writableDatabase.delete(Settings.getInstance().getDiff() +"rank",
+                "time=?", new String[]{time});
+        Toast.makeText(getApplicationContext(), "再按一次退出游戏",
+                Toast.LENGTH_SHORT).show();
+        show();
+    }
+
+    /**
+     * 返回开始页面
+     */
+    public void RETURN_MAIN(View view){
+        finish();
     }
 
 
-    //适配器类
-    class MyAdapter extends BaseAdapter {
+    /**
+     * 适配器类
+     */
+    class MyAdapter extends ArrayAdapter<RankLine> {
+        private int resourceId;
 
-        //获取集合中有多少条元素,由系统调用
-        @Override
-        public int getCount() {
-            // TODO Auto-generated method stub
-            return rankLineList.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            // TODO Auto-generated method stub
-            return 0;
+        public MyAdapter(Context context, int textViewResourceId, List<RankLine> object){
+            super(context,textViewResourceId,object);
+            resourceId=textViewResourceId;
         }
 
         //由系统调用，返回一个view对象作为listview的条目
@@ -150,14 +185,58 @@ public class RankActivity extends AppCompatActivity {
          * */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView tv = new TextView(RankActivity.this);
-            tv.setTextSize(18);
             //获取集合中的元素
             RankLine rankLine = rankLineList.get(position);
-            tv.setText(rankLine.toString());
+            View view;
+            ViewHolder viewHolder;
+            if(convertView == null){
+                view = LayoutInflater.from(getContext()).inflate(resourceId,parent,false);
+                viewHolder = new ViewHolder();
+                viewHolder.ranking = (TextView) view.findViewById(R.id.Ranking);
+                viewHolder.name = (TextView) view.findViewById(R.id.UserName);
+                viewHolder.score = (TextView) view.findViewById(R.id.Score);
+                viewHolder.time = (TextView) view.findViewById(R.id.Time);
+                view.setTag(viewHolder);
+            }else {
+                view = convertView;
+                viewHolder=(ViewHolder)view.getTag();
+            }
 
-            return tv;
+            TextView ranking = (TextView) view.findViewById(R.id.Ranking);
+            TextView name = (TextView) view.findViewById(R.id.UserName);
+            TextView score = (TextView) view.findViewById(R.id.Score);
+            TextView time = (TextView) view.findViewById(R.id.Time);
+
+            // 设置textview内容
+            int rank = position + 1;
+            String _rank = rank + "";
+            String _score = rankLine.getScore() + "";
+            ranking.setText(_rank);
+            name.setText(rankLine.getName());
+            score.setText(_score);
+            time.setText(rankLine.getTime());
+
+            viewHolder.ranking.setText(_rank);
+            viewHolder.name.setText(rankLine.getName());
+            viewHolder.score.setText(_score);
+            viewHolder.time.setText(rankLine.getTime());
+
+            // 将新录入的数据变红
+            if(rankLine.getTime().equals(currentTime)){
+                name.setTextColor(Color.RED);
+            }else{
+                name.setTextColor(Color.BLACK);
+            }
+            return view;
         }
 
+    }
+
+    // 用于保存几个textview的类
+    static class ViewHolder{
+        TextView ranking;
+        TextView name;
+        TextView score;
+        TextView time;
     }
 }
