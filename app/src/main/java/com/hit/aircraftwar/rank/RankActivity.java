@@ -155,8 +155,6 @@ public class RankActivity extends AppCompatActivity {
         writableDatabase = databaseHelper.getWritableDatabase();
         writableDatabase.delete(Settings.getInstance().getDiff() +"rank",
                 "time=?", new String[]{time});
-        Toast.makeText(getApplicationContext(), "再按一次退出游戏",
-                Toast.LENGTH_SHORT).show();
         show();
     }
 
