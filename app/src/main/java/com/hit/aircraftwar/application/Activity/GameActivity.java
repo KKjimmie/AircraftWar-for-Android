@@ -2,6 +2,7 @@ package com.hit.aircraftwar.application.Activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -25,7 +26,10 @@ import com.hit.aircraftwar.bullet.BaseBullet;
 import com.hit.aircraftwar.factory.BossFactory;
 import com.hit.aircraftwar.factory.EliteEnemyFactory;
 import com.hit.aircraftwar.factory.MobEnemyFactory;
+
+import com.hit.aircraftwar.music.MusicManager;
 import com.hit.aircraftwar.music.MySoundPool;
+
 import com.hit.aircraftwar.props.AbstractProp;
 import com.hit.aircraftwar.props.BombProp;
 
@@ -42,13 +46,12 @@ public abstract class GameActivity extends AppCompatActivity {
      * 时间间隔(ms)，控制刷新频率
      */
     protected int timeInterval = 40;
-
     protected HeroAircraft heroAircraft;
     protected List<AbstractAircraft> enemyAircrafts;
     protected List<BaseBullet> heroBullets;
     protected List<BaseBullet> enemyBullets;
     protected List<AbstractProp> props;
-
+    protected MySoundPool mySoundPool;
     protected int enemyMaxNumber = 5;
 
     protected boolean gameOverFlag = false;
@@ -61,6 +64,7 @@ public abstract class GameActivity extends AppCompatActivity {
      */
     protected int cycleDuration = 600;
     protected int cycleTime = 0;
+    MediaPlayer mp=null;
     /**
      * 创建三个工厂实例
      */
@@ -75,6 +79,15 @@ public abstract class GameActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initGame();
+        MusicManager.setName(R.raw.bgm);
+        Thread music_thread;//声明一个线程对象
+        music_thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                playBGSound();//播放背景音乐
+            }
+        });
+        music_thread.start();
         action();
     }
 
@@ -114,9 +127,9 @@ public abstract class GameActivity extends AppCompatActivity {
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
             // TODO:游戏bgm
+
 //            MusicController.setBgm(bossExistFlag);
             time += timeInterval;
-
             Log.d("222", time + "");
 
             // 周期性执行（控制频率）
@@ -128,6 +141,7 @@ public abstract class GameActivity extends AppCompatActivity {
                 // 检查是否达到产生Boss条件并根据条件产生Boss
                 this.gotoBoss();
                 this.changeBackground();
+
             }
 
             // 子弹移动
@@ -224,9 +238,11 @@ public abstract class GameActivity extends AppCompatActivity {
         if (! bossExistFlag && score >= Settings.getInstance().scoreToBoss * bossFactory.getBossLevel()){
             enemyAircrafts.add(bossFactory.produceEnemy());
             bossExistFlag = true;
+            MusicManager.setName(R.raw.bgm);
         }
         // TODO:播放boss音乐
 //        MusicController.setBossBgm(bossExistFlag);
+
     }
 
     /**
@@ -331,6 +347,7 @@ public abstract class GameActivity extends AppCompatActivity {
                             }
                             score += 100;
                             bossExistFlag = false;
+                            MusicManager.setName(R.raw.bgm);
                         }else{
                             score += 10;
                         }
@@ -562,4 +579,29 @@ public abstract class GameActivity extends AppCompatActivity {
 //    }
 //
 //}
+
+    private void playBGSound(){
+        if(mp!=null){
+            mp.release();//释放资源
+        }
+        while (MusicManager.getName()==0);
+        //播放的曲目取决于MusicName的值
+        mp=MediaPlayer.create(GameActivity.this, MusicManager.getName());
+        mp.start();
+        //为MediaPlayer添加播放完成事件监听
+        mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                try {
+                    Thread.sleep(10);//暂停时间（毫秒）
+                    playBGSound();//重新播放音乐
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+}
 }

@@ -31,7 +31,7 @@ public class CommonGameActivity extends GameActivity{
         Settings.getInstance().isLeverUp = false;
         Settings.getInstance().bossHp = 1200;
         Settings.getInstance().bossPower = 20;
-        Settings.getInstance().scoreToBoss = 500;
+        Settings.getInstance().scoreToBoss = 100;
         Settings.getInstance().bossPower = 20;
     }
 

@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.hit.aircraftwar.R;
+import com.hit.aircraftwar.music.MusicManager;
 import com.hit.aircraftwar.music.MySoundPool;
 
 import java.util.Objects;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         baseActivity=this;//传递给非activity的类使用

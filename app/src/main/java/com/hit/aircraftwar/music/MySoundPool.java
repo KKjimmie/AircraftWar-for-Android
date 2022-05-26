@@ -1,9 +1,14 @@
 package com.hit.aircraftwar.music;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.os.IBinder;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.hit.aircraftwar.R;
@@ -12,13 +17,14 @@ import com.hit.aircraftwar.application.Settings;
 
 import java.util.HashMap;
 
-public class MySoundPool {
+public class MySoundPool  {
 
     // 设置为单例模式
     private volatile static MySoundPool instance = null;
 
     private static SoundPool soundPool = new SoundPool(50, AudioManager.STREAM_MUSIC,0);;
     private static HashMap<Integer, Integer> soundData= new HashMap<>();
+    private static MediaPlayer player = null;
 
     // 音乐资源
     public static int BGM = R.raw.bgm;
@@ -39,7 +45,6 @@ public class MySoundPool {
     }
 
     private MySoundPool() {
-
     }
 
 
@@ -55,4 +60,5 @@ public class MySoundPool {
         }else loopNum = 0;
         soundPool.play(soundData.get(sound), volumnRatio,volumnRatio , 1, loopNum, 1);
     }
+
 }
