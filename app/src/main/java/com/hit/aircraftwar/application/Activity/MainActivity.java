@@ -1,5 +1,4 @@
 package com.hit.aircraftwar.application.Activity;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -23,7 +22,6 @@ import com.hit.aircraftwar.application.Settings;
 
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 

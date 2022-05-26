@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AircraftWar">
+
+<!--        <service-->
+<!--            android:name=".music.MusicService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true" />-->
         <activity
             android:name=".rank.RankActivity"
             android:exported="false" />
