@@ -1,6 +1,7 @@
 package com.hit.aircraftwar.application.Activity.Game;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -41,19 +42,19 @@ public abstract class GameActivity extends AppCompatActivity {
      * 时间间隔(ms)，控制刷新频率
      */
     protected int timeInterval = Settings.getInstance().timeInterval;
-
     protected HeroAircraft heroAircraft;
     protected List<AbstractAircraft> enemyAircrafts;
     protected List<BaseBullet> heroBullets;
     protected List<BaseBullet> enemyBullets;
     protected List<AbstractProp> props;
-
     protected int enemyMaxNumber = 5;
 
     public static boolean gameOverFlag = false;
-    protected boolean bossExistFlag = false; // 标志Boss是否存在
+    public static boolean bossExistFlag = false; // 标志Boss是否存在
     public static int score = 0;
     protected int time = 0;
+    // 标记是否需要进行背景音乐的切换
+    private boolean bgmChange = false;
     /**
      * 周期（ms)
      * 指示子弹的发射、敌机的产生频率
@@ -69,6 +70,10 @@ public abstract class GameActivity extends AppCompatActivity {
     protected GameView gameView;
     // 背景图片
     public int background;
+
+    // 背景音乐
+    private MediaPlayer bgmPlayer;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,11 +117,8 @@ public abstract class GameActivity extends AppCompatActivity {
 
         // 定时任务：绘制、对象产生、碰撞判定、击毁及结束判定
         Runnable task = () -> {
-            // TODO:游戏bgm
-//            MusicController.setBgm(bossExistFlag);
             time += timeInterval;
-
-            Log.d("222", time + "");
+//            Log.d("222", time + "");
 
             // 周期性执行（控制频率）
             if (timeCountAndNewCycleJudge()) {
@@ -127,6 +129,7 @@ public abstract class GameActivity extends AppCompatActivity {
                 // 检查是否达到产生Boss条件并根据条件产生Boss
                 this.gotoBoss();
                 this.changeBackground();
+
             }
 
             // 子弹移动
@@ -184,7 +187,7 @@ public abstract class GameActivity extends AppCompatActivity {
 
     private boolean timeCountAndNewCycleJudge() {
         cycleTime += timeInterval;
-        Log.d("111", cycleTime + "");
+//        Log.d("111", cycleTime + "");
         if (cycleTime >= cycleDuration && cycleTime - timeInterval < cycleTime) {
             // 跨越到新的周期
             cycleTime %= cycleDuration;
@@ -215,9 +218,11 @@ public abstract class GameActivity extends AppCompatActivity {
         if (! bossExistFlag && score >= Settings.getInstance().scoreToBoss * bossFactory.getBossLevel()){
             enemyAircrafts.add(bossFactory.produceEnemy());
             bossExistFlag = true;
+            bgmChange = true;
         }
-        // TODO:播放boss音乐
-//        MusicController.setBossBgm(bossExistFlag);
+        // 播放boss音乐
+        playBgm(bgmChange);
+
     }
 
     /**
@@ -318,6 +323,8 @@ public abstract class GameActivity extends AppCompatActivity {
                             }
                             score += 100;
                             bossExistFlag = false;
+                            // 切换背景音乐
+                            bgmChange = true;
                         }else{
                             score += 10;
                         }
@@ -426,5 +433,48 @@ public abstract class GameActivity extends AppCompatActivity {
             return super.onKeyDown(keyCode, event);
         }
         else return false;
+    }
+
+    /**
+     * bgm播放
+     * @param isChange 是否需要切换bgm
+     */
+    private void playBgm(boolean isChange){
+        if( ! Settings.getInstance().getVideoState()){
+            return;
+        }
+        if(bgmPlayer == null) {
+            if (bossExistFlag) {
+                bgmPlayer = MediaPlayer.create(this, R.raw.bgm_boss);
+            } else {
+                bgmPlayer = MediaPlayer.create(this, R.raw.bgm);
+            }
+            bgmPlayer.setLooping(true);
+        }else if(isChange){
+            stopBgm();
+            if (bossExistFlag) {
+                bgmPlayer = MediaPlayer.create(this, R.raw.bgm_boss);
+            } else {
+                bgmPlayer = MediaPlayer.create(this, R.raw.bgm);
+            }
+        }
+        bgmPlayer.start();
+        bgmChange = false;
+    }
+
+    private void stopBgm(){
+        if(bgmPlayer != null){
+            bgmPlayer.stop();
+            bgmPlayer.reset();
+            bgmPlayer.release();
+            bgmPlayer = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 释放音乐资源
+        stopBgm();
     }
 }
