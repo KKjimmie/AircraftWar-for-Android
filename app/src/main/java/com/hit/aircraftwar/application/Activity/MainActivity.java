@@ -25,11 +25,15 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
+    private Button singleButton;
+    private Button exitButton;
+    private Button vsButton;
+    private CheckBox soundCheckBox;
+
     private Button easyButton;
     private Button commonButton;
     private Button hardButton;
-    private Button exitButton;
-    private CheckBox soundCheckBox;
+    private Button backToMainButton;
 
     public static int width;
     public static int height;
@@ -64,6 +68,49 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Objects.requireNonNull(getSupportActionBar()).hide();
 
+        // 设置layout
+        setFirstLayout();
+    }
+
+    // 设置第一个layout的按钮监听
+    private void setFirstLayout(){
+        // 单机模式
+        singleButton = (Button) findViewById(R.id.single_button);
+        singleButton.setOnClickListener(
+                view -> {
+                    setContentView(R.layout.single_choice);
+                    setSecondLayout();
+                });
+
+        // 联机模式
+        vsButton = (Button) findViewById(R.id.vs_button);
+        vsButton.setOnClickListener(
+                view ->{
+                    Toast.makeText(this, R.string.vs_toast, Toast.LENGTH_SHORT).show();
+                    Settings.getInstance().setGameMode(Settings.VS_MODE);
+                    Intent intent = new Intent(MainActivity.this, MatchActivity.class);
+                    startActivity(intent);
+                });
+
+        // 退出游戏
+        exitButton = (Button) findViewById(R.id.exit_button);
+        exitButton.setOnClickListener(
+                view ->{
+                    Intent MyIntent = new Intent(Intent.ACTION_MAIN);
+                    MyIntent.addCategory(Intent.CATEGORY_HOME);
+                    startActivity(MyIntent);
+                    finish();
+                    System.exit(0);
+                });
+
+        // 音效选择
+        soundCheckBox = (CheckBox) findViewById(R.id.sound_check_box);
+        soundCheckBox.setOnCheckedChangeListener(this);
+    }
+
+    // 设置第二个layout的监听按钮
+    private void setSecondLayout(){
+        // 简单模式
         easyButton = (Button) findViewById(R.id.easy_button);
         easyButton.setOnClickListener(
                 view -> {
@@ -73,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     startActivity(intent);
                 });
 
+        // 普通模式
         commonButton = (Button) findViewById(R.id.common_button);
         commonButton.setOnClickListener(
                 view -> {
@@ -82,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     startActivity(intent);
                 });
 
+        // 困难模式
         hardButton = (Button) findViewById(R.id.hard_button);
         hardButton.setOnClickListener(
                 view -> {
@@ -90,18 +139,13 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     Intent intent = new Intent(MainActivity.this, HardGameActivity.class);
                     startActivity(intent);
                 });
-        exitButton = (Button) findViewById(R.id.exit_button);
-        exitButton.setOnClickListener(
-                view ->{
-                    Intent MyIntent = new Intent(Intent.ACTION_MAIN);
-                    MyIntent.addCategory(Intent.CATEGORY_HOME);
-                    startActivity(MyIntent);
-                    finish();
-                    System.exit(0);
-        });
-        soundCheckBox = (CheckBox) findViewById(R.id.sound_check_box);
-        soundCheckBox.setOnCheckedChangeListener(this);
 
+        backToMainButton = (Button) findViewById(R.id.back_to_main_button);
+        backToMainButton.setOnClickListener(
+                view -> {
+                    setContentView(R.layout.activity_main);
+                    setFirstLayout();
+            });
     }
 
     @Override
@@ -125,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     };
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
+        if (keyCode == KeyEvent.KEYCODE_BACK ) {
             exit();
             return false;
         }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.service.autofill.FieldClassification;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -13,6 +14,7 @@ import com.hit.aircraftwar.aircraft.AbstractAircraft;
 import com.hit.aircraftwar.aircraft.HeroAircraft;
 import com.hit.aircraftwar.application.Activity.Game.GameActivity;
 import com.hit.aircraftwar.application.Activity.MainActivity;
+import com.hit.aircraftwar.application.Activity.MatchActivity;
 import com.hit.aircraftwar.basic.AbstractFlyingObject;
 import com.hit.aircraftwar.bullet.BaseBullet;
 import com.hit.aircraftwar.props.AbstractProp;
@@ -180,6 +182,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         txt.setTextSize(50);
         txt.setAntiAlias(true);
         mCanvas.drawText("SCORE:" + GameActivity.score, x, y, txt);
+        if(Settings.getInstance().getGameMode() == Settings.VS_MODE){
+            if(MatchActivity.isClient){
+                mCanvas.drawText("对方分数：" + MyClient.serverScore, x+600, y, txt);
+            }else{
+                mCanvas.drawText("对方分数：" + MyServer.clientScore, x+600, y, txt);
+            }
+        }
         y = y + 50;
         mCanvas.drawText("LIFE:" + heroAircraft.getHp(), x, y, txt);
     }

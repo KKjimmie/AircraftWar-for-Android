@@ -82,7 +82,6 @@ public class RankActivity extends AppCompatActivity {
         show();
 
         // 监控listview点击事件
-
         listView.setOnItemClickListener((adapterView, view, position, id) -> {
             // 弹窗确认操作
             AlertDialog alertDialog = new AlertDialog.Builder(RankActivity.this)

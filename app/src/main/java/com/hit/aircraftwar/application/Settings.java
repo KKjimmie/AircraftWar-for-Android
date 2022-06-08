@@ -13,6 +13,7 @@ public class Settings {
     public static final int EASY_MODE = 0;
     public static final int COMMON_MODE = 1;
     public static final int HARD_MODE = 2;
+    public static final int VS_MODE = 3;
 
     // 音效开关常量
     public static final boolean SOUND_ON = true;
@@ -152,6 +153,9 @@ public class Settings {
                 break;
             case HARD_MODE:
                 diff = "hard";
+                break;
+            case VS_MODE:
+                diff = "vs_mode";
                 break;
             default: diff = null;
         }
