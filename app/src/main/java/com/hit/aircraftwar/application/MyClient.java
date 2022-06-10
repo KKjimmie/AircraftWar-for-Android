@@ -17,7 +17,7 @@ import java.net.Socket;
 /**
  * @author 柯嘉铭
  * @date 2022/6/6.
- * description：客户端类
+ * description：联机客户端类
  */
 public class MyClient {
     private static Socket socket;

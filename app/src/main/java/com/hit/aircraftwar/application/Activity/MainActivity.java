@@ -19,12 +19,14 @@ import com.hit.aircraftwar.application.Activity.Game.CommonGameActivity;
 import com.hit.aircraftwar.application.Activity.Game.EasyGameActivity;
 import com.hit.aircraftwar.application.Activity.Game.HardGameActivity;
 import com.hit.aircraftwar.application.Settings;
+import com.hit.aircraftwar.login.LoginActivity;
 
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
+    private Button loginButton;
     private Button singleButton;
     private Button exitButton;
     private Button vsButton;
@@ -74,6 +76,15 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     // 设置第一个layout的按钮监听
     private void setFirstLayout(){
+        // 登录
+
+        loginButton = (Button) findViewById(R.id.login_button);
+        loginButton.setOnClickListener(
+                view -> {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+            });
+
         // 单机模式
         singleButton = (Button) findViewById(R.id.single_button);
         singleButton.setOnClickListener(

@@ -18,4 +18,5 @@
     <string name="join_room">加入房间</string>
     <string name="single_mode">单机模式</string>
     <string name="back">返回</string>
+    <string name="login">登录</string>
 </resources>
