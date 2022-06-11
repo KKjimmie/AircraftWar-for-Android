@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg2">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/lg_userIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/hero" />
+
+        <EditText
+            android:id="@+id/lg_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lg_userIcon"
+            android:layout_marginTop="30dp"
+            android:drawableLeft="@drawable/people"
+            android:drawablePadding="5dp"
+            android:hint="账号"
+            android:maxLines="1"
+            android:theme="@style/myedittext_color" />
+
+        <EditText
+            android:id="@+id/lg_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lg_username"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/password"
+            android:drawablePadding="5dp"
+            android:hint="密码"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:theme="@style/myedittext_color" />
+
+        <LinearLayout
+            android:id="@+id/ly"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lg_password">
+
+            <CheckBox
+                android:id="@+id/lg_rememberPwd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="记住密码"
+                android:textColor="#1E90FF"/>
+
+            <TextView
+                android:id="@+id/lg_forgetPwd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="忘记密码"
+                android:textColor="#1E90FF"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/lg_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ly"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="登录"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:background="#1E90FF	"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/lg_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:text="没有账号？立即注册"
+        android:textColor="#1E90FF"/>
+</LinearLayout>
+

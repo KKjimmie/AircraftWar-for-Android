@@ -1,11 +1,22 @@
 <resources>
     <string name="app_name">飞机大战</string>
-    <string name="easy_button">EASY</string>
-    <string name="common_button">COMMON</string>
-    <string name="hard_button">HARD</string>
-
+    <string name="easy_button">简单模式</string>
+    <string name="common_button">普通模式</string>
+    <string name="hard_button">困难模式</string>
     <string name="easy_toast">EASY MODE</string>
     <string name="common_toast">COMMON MODE</string>
     <string name="hard_toast">HARD MODE</string>
+    <string name="vs_toast">联机模式</string>
     <string name="sound">音效</string>
+    <string name="exit">退出游戏</string>
+    <string name="rank">排行榜</string>
+    <string name="game_name">飞机大战</string>
+    <string name="record">记录数据</string>
+    <string name="return_main">返回开始页面</string>
+    <string name="vs">联机模式</string>
+    <string name="create_room">创建房间</string>
+    <string name="join_room">加入房间</string>
+    <string name="single_mode">单机模式</string>
+    <string name="back">返回</string>
+    <string name="login">登录</string>
 </resources>

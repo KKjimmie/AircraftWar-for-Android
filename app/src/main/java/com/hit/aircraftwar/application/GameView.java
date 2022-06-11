@@ -11,14 +11,16 @@ import android.view.SurfaceView;
 
 import com.hit.aircraftwar.aircraft.AbstractAircraft;
 import com.hit.aircraftwar.aircraft.HeroAircraft;
-import com.hit.aircraftwar.application.Activity.GameActivity;
+import com.hit.aircraftwar.application.Activity.Game.GameActivity;
 import com.hit.aircraftwar.application.Activity.MainActivity;
+import com.hit.aircraftwar.application.Activity.MatchActivity;
 import com.hit.aircraftwar.basic.AbstractFlyingObject;
 import com.hit.aircraftwar.bullet.BaseBullet;
+import com.hit.aircraftwar.match.MyClient;
+import com.hit.aircraftwar.match.MyServer;
 import com.hit.aircraftwar.props.AbstractProp;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, Runnable
 {
@@ -41,7 +43,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private List<BaseBullet> heroBullets;
     private List<BaseBullet> enemyBullets;
     private List<AbstractProp> props;
-    private int bg;
+    public static int background;
 
     public GameView(Context context, int bg, HeroAircraft heroAircraft, List<AbstractAircraft> enemyAircrafts, List<BaseBullet> heroBullets, List<BaseBullet> enemyBullets, List<AbstractProp> props)
     {
@@ -52,7 +54,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         this.heroBullets = heroBullets;
         this.enemyBullets = enemyBullets;
         this.props = props;
-        this.bg = bg;
+        GameView.background = bg;
 
         init();
     }
@@ -66,15 +68,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         this.setKeepScreenOn(true);
         //设置是否抗锯齿
         paint.setAntiAlias(true);
-        // 处理屏幕闪烁问题
+        // 处理屏幕闪烁问题？
         paint.setDither(true);
     }
 
     @Override
     public void surfaceCreated(SurfaceHolder holder)
-    {//创建
+    {
+        //创建
         isDrawing = true;
-        MainActivity.executorService.schedule(this, 0, TimeUnit.MILLISECONDS);
+        // 开启子线程
+        thread = new Thread(this);
+        thread.start();
     }
 
     @Override
@@ -106,9 +111,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         try
         {
             mCanvas = mSurfaceHolder.lockCanvas();
-            if(mSurfaceHolder == null || mCanvas == null){
-                return;
-            }
             synchronized (mSurfaceHolder)
             {
                 // 这里进行内容的绘制
@@ -131,8 +133,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         catch (Exception e)
         {
             e.printStackTrace();
+        }finally {
+            if(mCanvas != null){
+                mSurfaceHolder.unlockCanvasAndPost(mCanvas);
+            }
         }
-        mSurfaceHolder.unlockCanvasAndPost(mCanvas);
+
     }
 
     private int backgroundTop = 0;
@@ -140,7 +146,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
      * 绘制背景，图片滚动
      */
     private void paintBackground(){
-        bitmap = BitmapFactory.decodeResource(getResources(), bg);
+        bitmap = BitmapFactory.decodeResource(getResources(), background);
         mCanvas.drawBitmap(bitmap, 0, backgroundTop - screenHeight, paint);
         mCanvas.drawBitmap(bitmap, 0, backgroundTop, paint);
         backgroundTop += 5;
@@ -156,10 +162,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         {
             return;
         }
-        for (AbstractFlyingObject object : objects)
+        for (int i = 0; i < objects.size(); i ++)
         {
-            bitmap = object.getBitmap();
-            mCanvas.drawBitmap(bitmap, object.getLocationX() - bitmap.getWidth() / 2, object.getLocationY() - bitmap.getHeight() / 2, paint);
+            bitmap = objects.get(i).getBitmap();
+            mCanvas.drawBitmap(bitmap, (float) (objects.get(i).getLocationX() - bitmap.getWidth() / 2.0),
+                    (float) (objects.get(i).getLocationY() - bitmap.getHeight() / 2.0), paint);
         }
     }
 
@@ -175,6 +182,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         txt.setTextSize(50);
         txt.setAntiAlias(true);
         mCanvas.drawText("SCORE:" + GameActivity.score, x, y, txt);
+        if(Settings.getInstance().getGameMode() == Settings.VS_MODE){
+            if(MatchActivity.isClient){
+                mCanvas.drawText("对方分数：" + MyClient.serverScore, x+600, y, txt);
+            }else{
+                mCanvas.drawText("对方分数：" + MyServer.clientScore, x+600, y, txt);
+            }
+        }
         y = y + 50;
         mCanvas.drawText("LIFE:" + heroAircraft.getHp(), x, y, txt);
     }
