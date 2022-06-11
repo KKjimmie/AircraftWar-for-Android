@@ -97,10 +97,15 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         vsButton = (Button) findViewById(R.id.vs_button);
         vsButton.setOnClickListener(
                 view ->{
-                    Toast.makeText(this, R.string.vs_toast, Toast.LENGTH_SHORT).show();
-                    Settings.getInstance().setGameMode(Settings.VS_MODE);
-                    Intent intent = new Intent(MainActivity.this, MatchActivity.class);
-                    startActivity(intent);
+                    // 判断是否登录账号
+                    if(LoginActivity.isLogin == false){
+                        Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(this, R.string.vs_toast, Toast.LENGTH_SHORT).show();
+                        Settings.getInstance().setGameMode(Settings.VS_MODE);
+                        Intent intent = new Intent(MainActivity.this, MatchActivity.class);
+                        startActivity(intent);
+                    }
                 });
 
         // 退出游戏

@@ -1,7 +1,7 @@
 package com.hit.aircraftwar.login;
 
 import android.util.Log;
-import com.hit.aircraftwar.application.MyClient;
+import com.hit.aircraftwar.match.MyClient;
 
 import net.sf.json.JSONObject;
 import java.io.BufferedReader;
@@ -11,7 +11,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.security.cert.CertPathBuilderResult;
 
 /**
  * @author 柯嘉铭

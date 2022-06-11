@@ -1,10 +1,7 @@
 package com.hit.aircraftwar.application;
 
-
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.hit.aircraftwar.R;
 import com.hit.aircraftwar.aircraft.Boss;
@@ -17,11 +14,6 @@ import com.hit.aircraftwar.bullet.HeroBullet;
 import com.hit.aircraftwar.props.BloodProp;
 import com.hit.aircraftwar.props.BombProp;
 import com.hit.aircraftwar.props.BulletProp;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 

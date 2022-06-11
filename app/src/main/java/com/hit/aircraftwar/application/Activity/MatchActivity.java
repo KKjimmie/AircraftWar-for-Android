@@ -5,22 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.service.autofill.FieldClassification;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.hit.aircraftwar.R;
 import com.hit.aircraftwar.application.Activity.Game.CommonGameActivity;
-import com.hit.aircraftwar.application.Activity.Game.EasyGameActivity;
-import com.hit.aircraftwar.application.MyClient;
-import com.hit.aircraftwar.application.MyServer;
+import com.hit.aircraftwar.match.MyClient;
+import com.hit.aircraftwar.match.MyServer;
 import com.hit.aircraftwar.application.Settings;
 
 import java.io.PrintWriter;
-import java.net.ContentHandler;
 import java.net.Socket;
-import java.util.ConcurrentModificationException;
 import java.util.Objects;
 
 public class MatchActivity extends AppCompatActivity {

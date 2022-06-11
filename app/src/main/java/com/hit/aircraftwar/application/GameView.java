@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.service.autofill.FieldClassification;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -17,10 +16,11 @@ import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.application.Activity.MatchActivity;
 import com.hit.aircraftwar.basic.AbstractFlyingObject;
 import com.hit.aircraftwar.bullet.BaseBullet;
+import com.hit.aircraftwar.match.MyClient;
+import com.hit.aircraftwar.match.MyServer;
 import com.hit.aircraftwar.props.AbstractProp;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback, Runnable
 {

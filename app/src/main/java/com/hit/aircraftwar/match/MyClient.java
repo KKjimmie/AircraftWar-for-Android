@@ -1,16 +1,14 @@
-package com.hit.aircraftwar.application;
+package com.hit.aircraftwar.match;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.hit.aircraftwar.application.Activity.Game.GameActivity;
-import com.hit.aircraftwar.application.Activity.MainActivity;
+import com.hit.aircraftwar.login.LoginActivity;
 
-import org.json.JSONObject;
+import net.sf.json.JSONObject;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
@@ -24,6 +22,7 @@ public class MyClient {
     public static boolean connection_state = false;
     public static String TAG = "客户端类";
     public static int serverScore = 0;
+    public static String serverAccount = "";
 
     public MyClient(){
         while (!connection_state) {
@@ -81,8 +80,9 @@ class Client_listen implements Runnable{
         try {
             while (true){
 //                Toast.makeText(MainActivity.baseActivity, ois.readObject().toString(), Toast.LENGTH_SHORT).show();
-//                System.out.println(ois.readObject());
-                MyClient.serverScore = ois.readInt();
+                JSONObject object = (JSONObject) ois.readObject();
+                MyClient.serverScore = object.getInt("score");
+                MyClient.serverAccount = object.getString("account");
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -103,10 +103,10 @@ class Client_send implements Runnable{
     public void run() {
         try {
             while (true){
-//                JSONObject object = new JSONObject();
-//                object.put("score", 1000);
-//                oos.writeObject(object);
-                oos.writeInt(GameActivity.score);
+                JSONObject object = new JSONObject();
+                object.put("account", LoginActivity.gameUser.getAccount());
+                object.put("score", GameActivity.score);
+                oos.writeObject(object);
                 oos.flush();
             }
         }catch (Exception e){
@@ -123,7 +123,7 @@ class Client_send implements Runnable{
         }
     }
 }
-// 心跳包保证连接
+// TODO:心跳包保证连接
 class Client_heart implements Runnable{
     private Socket socket;
     private ObjectOutputStream oos;

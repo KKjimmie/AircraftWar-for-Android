@@ -30,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     public static User gameUser;
 
     // 标识是否已经登录
-    public static boolean isLogin;
+    public static boolean isLogin = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

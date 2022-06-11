@@ -16,15 +16,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hit.aircraftwar.R;
+import com.hit.aircraftwar.application.Activity.MatchActivity;
 import com.hit.aircraftwar.application.Settings;
 import com.hit.aircraftwar.login.LoginActivity;
+import com.hit.aircraftwar.match.MyClient;
+import com.hit.aircraftwar.match.MyServer;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,8 +34,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
  * @author 柯嘉铭
  * 显示排行榜的activity
@@ -70,6 +70,8 @@ public class RankActivity extends AppCompatActivity {
                 break;
             case "hard": textView.setText("困难模式排行榜");
                 break;
+            case "vs_mode":textView.setText("联机模式排行榜");
+                break;
             default: textView.setText("排行榜");
         }
 
@@ -89,7 +91,7 @@ public class RankActivity extends AppCompatActivity {
                     .setTitle("删除？")
                     .setMessage("确定删除这条数据？")
                     .setIcon(R.drawable.hero)
-                    .setPositiveButton("确定", (dialog, which) -> delete(rankLineList.get(position).getTime()))
+                    .setPositiveButton("确定", (dialog, which) -> delete(rankLineList.get(position).getName(), rankLineList.get(position).getTime()))
                     .setNegativeButton("取消", null)
                     .create();
             alertDialog.show();
@@ -121,6 +123,21 @@ public class RankActivity extends AppCompatActivity {
         values.put("time", currentTime);
         writableDatabase = databaseHelper.getWritableDatabase();
         writableDatabase.insert(Settings.getInstance().getDiff() +"rank", null, values);
+
+        // 联机模式还需要记录对手的排名信息
+        if(Settings.getInstance().getGameMode() == Settings.VS_MODE){
+            values = new ContentValues();
+            if(MatchActivity.isClient) {
+                values.put("name", MyClient.serverAccount);
+                values.put("score", MyClient.serverScore);
+                values.put("time", currentTime);
+            }else{
+                values.put("name", MyServer.clientAccount);
+                values.put("score", MyServer.clientScore);
+                values.put("time", currentTime);
+            }
+            writableDatabase.insert(Settings.getInstance().getDiff() +"rank",null, values);
+        }
         // 标志已经记录过信息
         isRecord = true;
         show();
@@ -156,10 +173,10 @@ public class RankActivity extends AppCompatActivity {
     /**
      * 删除一条排行榜信息
      */
-    public void delete(String time){
+    public void delete(String name, String time){
         writableDatabase = databaseHelper.getWritableDatabase();
         writableDatabase.delete(Settings.getInstance().getDiff() +"rank",
-                "time=?", new String[]{time});
+                "name=?,time=?", new String[]{name, time});
         show();
     }
 
