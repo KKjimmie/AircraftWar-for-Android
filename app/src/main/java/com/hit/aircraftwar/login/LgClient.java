@@ -11,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.security.cert.CertPathBuilderResult;
 
 /**
  * @author 柯嘉铭
@@ -125,18 +126,27 @@ public class LgClient {
             JSONObject jsonObject = JSONObject.fromObject(content);
             if (jsonObject != null) {
                 switch (jsonObject.getInt("type")) {
+                    case CREATE_ACCOUNT:
+                        RegisterActivity.result = jsonObject.getBoolean("result");
+                        break;
+
                     case ACCOUNT_INFO:
                         account = jsonObject.getString("account");
                         pwd = jsonObject.getString("password");
                         credits = jsonObject.getInt("credits");
                         LoginActivity.realUser = new User(account, pwd, credits);
-                        LoginActivity.isGetRealUser = true;
+
+                        // 通知登录界面响应
+                        LoginActivity.loginActivity.response();
                         break;
                 }
             }
         }
     }
 
+    /**
+     * 发送信息给服务器
+     */
     static class clientSend implements Runnable {
         private Socket socket;
         private PrintWriter writer;
@@ -153,12 +163,21 @@ public class LgClient {
                 JSONObject object = new JSONObject();
                  if(type != -1) {
                     switch(type){
+                        case CREATE_ACCOUNT:
+                            object = new JSONObject();
+                            object.put("type", CREATE_ACCOUNT);
+                            object.put("account", RegisterActivity.registerUser.getAccount());
+                            object.put("password", RegisterActivity.registerUser.getPassword());
+                            object.put("credits", RegisterActivity.registerUser.getCredits());
+                            writer.println(object.toString());
+                            type = -1;
+                            break;
                         case ACCOUNT_INFO:
                             object = new JSONObject();
                             object.put("type", ACCOUNT_INFO);
                             object.put("account", LoginActivity.gameUser.getAccount());
-
                             writer.println(object.toString());
+                            type = -1;
                             break;
                     }
 

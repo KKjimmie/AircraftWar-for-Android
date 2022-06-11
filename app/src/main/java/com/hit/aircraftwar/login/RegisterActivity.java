@@ -16,6 +16,10 @@ import java.util.Objects;
 
 public class RegisterActivity extends AppCompatActivity {
 
+    public static User registerUser;
+    public static boolean result;
+    public static Object lock = new Object();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +41,19 @@ public class RegisterActivity extends AppCompatActivity {
                 String inputAccount = username.getText().toString();
                 String inputPassword = password.getText().toString();
                 String inputAffirm = passwordAffirm.getText().toString();
-                User user = null;
+                registerUser = null;
                 if (inputAffirm.equals(inputPassword)) {
                     //存储账号密码
-                    user = new User(inputAccount, inputPassword, 1000);
+                    registerUser = new User(inputAccount, inputPassword, 1000);
+                    // 通知注册
+                    LgClient.type = LgClient.CREATE_ACCOUNT;
+                    synchronized (lock){
+                        LgClient.send();
+                    }
+
+                    synchronized (lock){
+                        LgClient.listen();
+                    }
                     //传回账号
                     Intent intent = new Intent();
                     intent.putExtra("username", inputAccount);

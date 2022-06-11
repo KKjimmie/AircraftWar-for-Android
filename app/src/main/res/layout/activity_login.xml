@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_marginRight="20dp"
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/lg_userIcon"

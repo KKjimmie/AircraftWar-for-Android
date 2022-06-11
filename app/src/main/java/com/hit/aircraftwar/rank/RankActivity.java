@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.hit.aircraftwar.R;
 import com.hit.aircraftwar.application.Settings;
+import com.hit.aircraftwar.login.LoginActivity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -108,7 +109,12 @@ public class RankActivity extends AppCompatActivity {
         // 获取数据
         Intent intent = getIntent();
         int score = intent.getIntExtra("score", 0);
-        values.put("name", "testname");// 后续实现登录后，再获取用户名
+        // 如果登录，则记录登录的用户名，否则是默认的用户名
+        if(LoginActivity.isLogin){
+            values.put("name", LoginActivity.gameUser.getAccount());
+        }else {
+            values.put("name", "testname");
+        }
         values.put("score", score);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd HH:mm:ss");
         currentTime = formatter.format(LocalDateTime.now());
