@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.hit.aircraftwar.R;
+
 public class StoreActivity extends AppCompatActivity {
 
     @Override
