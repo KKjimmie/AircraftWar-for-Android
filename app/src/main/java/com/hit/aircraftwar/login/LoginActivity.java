@@ -3,7 +3,9 @@ package com.hit.aircraftwar.login;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
@@ -92,8 +94,15 @@ public class LoginActivity extends AppCompatActivity {
         //账号密码匹配
         if (realUser.getAccount().equals(gameUser.getAccount()) && realUser.getPassword().equals(gameUser.getPassword())) {
             isLogin = true;
-//            Intent intent = new Intent(LoginActivity.this, EasyGameActivity.class);
-//            startActivity(intent);
+            // 记录以保持登入状态
+            SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+            sp.edit()
+                    .putString("account", realUser.getAccount())
+                    .putString("password", realUser.getPassword())
+                    .putInt("credits", realUser.getCredits())
+                    .putBoolean("isLogin", true)
+                    .apply();
+
             finish();
             this.onDestroy();
         } else {

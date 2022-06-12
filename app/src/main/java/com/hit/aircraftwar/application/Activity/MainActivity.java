@@ -3,6 +3,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,13 +21,15 @@ import com.hit.aircraftwar.application.Activity.Game.EasyGameActivity;
 import com.hit.aircraftwar.application.Activity.Game.HardGameActivity;
 import com.hit.aircraftwar.application.Settings;
 import com.hit.aircraftwar.login.LoginActivity;
+import com.hit.aircraftwar.login.User;
+import com.hit.aircraftwar.login.UserActivity;
 
 import java.util.Objects;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
-    private Button loginButton;
+    private Button userCenterButton;
     private Button singleButton;
     private Button exitButton;
     private Button vsButton;
@@ -76,12 +79,19 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
 
     // 设置第一个layout的按钮监听
     private void setFirstLayout(){
-        // 登录
+        // 用户中心
 
-        loginButton = (Button) findViewById(R.id.login_button);
-        loginButton.setOnClickListener(
+        userCenterButton = (Button) findViewById(R.id.user_button);
+        userCenterButton.setOnClickListener(
                 view -> {
-                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    Intent intent = null;
+                    if(sp.getBoolean("isLogin", false)) {
+                        intent = new Intent(MainActivity.this, UserActivity.class);
+                    }else{
+                        Toast.makeText(MainActivity.this, "还没登陆，请先登录！", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(MainActivity.this, LoginActivity.class);
+                    }
                     startActivity(intent);
             });
 
@@ -98,7 +108,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         vsButton.setOnClickListener(
                 view ->{
                     // 判断是否登录账号
-                    if(LoginActivity.isLogin == false){
+                    SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    if(!sp.getBoolean("isLogin", false)){
                         Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
                     }else {
                         Toast.makeText(this, R.string.vs_toast, Toast.LENGTH_SHORT).show();

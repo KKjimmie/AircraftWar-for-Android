@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -112,8 +113,9 @@ public class RankActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int score = intent.getIntExtra("score", 0);
         // 如果登录，则记录登录的用户名，否则是默认的用户名
-        if(LoginActivity.isLogin){
-            values.put("name", LoginActivity.gameUser.getAccount());
+        SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+        if(sp.getBoolean("isLogin", false)){
+            values.put("name", sp.getString("account", "testname1"));
         }else {
             values.put("name", "testname");
         }
