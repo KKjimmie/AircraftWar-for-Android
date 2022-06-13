@@ -1,5 +1,6 @@
 package com.hit.aircraftwar.aircraft;
 
+import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.application.ImageManager;
 import com.hit.aircraftwar.application.Settings;
 import com.hit.aircraftwar.bullet.BaseBullet;
@@ -20,6 +21,7 @@ public class MachineGun extends AbstractAircraft{
         this.setStrategy(new DirectShoot());
         this.bitmap = ImageManager.MACHINE_GUN_BITMAP;
     }
+
 
 
     @Override

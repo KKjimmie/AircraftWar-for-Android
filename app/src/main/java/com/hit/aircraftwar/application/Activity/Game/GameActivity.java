@@ -57,6 +57,7 @@ public abstract class GameActivity extends AppCompatActivity {
     public static boolean bossExistFlag = false; // 标志Boss是否存在
     public static int score = 0;
     protected int time = 0;
+    protected boolean machineflag = false;
     // 标记是否需要进行背景音乐的切换
     private boolean bgmChange = false;
     /**
@@ -144,6 +145,7 @@ public abstract class GameActivity extends AppCompatActivity {
         enemyAircrafts = new LinkedList<>();
         heroBullets = new LinkedList<>();
         enemyBullets = new LinkedList<>();
+        MachineGun = new LinkedList<>();
         props = new LinkedList<>();
         gameView = new GameView(this, background, heroAircraft, enemyAircrafts, heroBullets, enemyBullets, props);
         setContentView(gameView);
@@ -275,9 +277,9 @@ public abstract class GameActivity extends AppCompatActivity {
         // 英雄射击
         heroBullets.addAll(heroAircraft.shoot());
         MySoundPool.playSound(MySoundPool.BULLET, false);
-        //for(AbstractAircraft gun:MachineGun){
-        //  heroBullet.addAll(gun.shoot());
-        //}
+        for(AbstractAircraft gun:MachineGun){
+         heroBullets.addAll(gun.shoot());
+        }
     }
 
     /**
@@ -299,6 +301,9 @@ public abstract class GameActivity extends AppCompatActivity {
         for (AbstractAircraft enemyAircraft : enemyAircrafts) {
             enemyAircraft.forward();
         }
+        for(AbstractAircraft gun:MachineGun){
+            gun.forward();
+        }
     }
 
     /**
@@ -308,9 +313,7 @@ public abstract class GameActivity extends AppCompatActivity {
         for (AbstractProp prop : props){
             prop.forward();
         }
-        //for(AbstractAircraft gun:MachineGun){
-        //    gun.forward();
-        //}
+
     }
 
 
@@ -353,15 +356,15 @@ public abstract class GameActivity extends AppCompatActivity {
                     enemyAircraft.decreaseHp(bullet.getPower());
                     bullet.vanish();
                     if (enemyAircraft.notValid()) {
-                        if (enemyAircraft instanceof EliteEnemy){
+                        if (enemyAircraft instanceof EliteEnemy) {
                             AbstractProp prop = ((EliteEnemy) enemyAircraft).genProp();
-                            if (prop != null){
+                            if (prop != null) {
                                 props.add(prop);
                             }
                             score += 30;
-                        }else if (enemyAircraft instanceof Boss){
+                        } else if (enemyAircraft instanceof Boss) {
                             AbstractProp prop = ((Boss) enemyAircraft).genProp();
-                            if (prop != null){
+                            if (prop != null) {
                                 props.add(prop);
                             }
                             score += 100;
@@ -369,15 +372,15 @@ public abstract class GameActivity extends AppCompatActivity {
                             LoginActivity.gameUser.addCredits();
                             // 切换背景音乐
                             bgmChange = true;
-                        }else{
+                        } else {
                             score += 10;
                         }
-                        if(itemflag2){
+                        if (itemflag2) {
                             if (heroAircraft.getHp() < Settings.getInstance().maxHeroHp) {
-                                heroAircraft.decreaseHp(- 10);
+                                heroAircraft.decreaseHp(-10);
                             }
                         }
-                        if(itemflag4){
+                        if (itemflag4) {
                             heroAircraft.addHeropower(1);
                         }
                     }
@@ -389,7 +392,12 @@ public abstract class GameActivity extends AppCompatActivity {
                 }
             }
         }
-
+        for (AbstractAircraft gun : MachineGun){
+            gun.decreaseHp(1);
+            if(gun.getHp()<=0){
+                gun.vanish();
+            }
+        }
         for (AbstractProp prop : props) {
             if (prop.notValid()){
                 continue;
@@ -420,9 +428,9 @@ public abstract class GameActivity extends AppCompatActivity {
                         heroAircraft.addHeropower(10);
                     }
                 }
-                //else{
-                //    MachineGun.add(machineGunFactory.produceEnemy());
-                //}
+                if(itemflag1) {
+                    MachineGun.add(machineGunFactory.produceEnemy());
+                }
                 prop.work();
                 prop.vanish();
             }
@@ -463,6 +471,7 @@ public abstract class GameActivity extends AppCompatActivity {
         enemyBullets.removeIf(AbstractFlyingObject::notValid);
         heroBullets.removeIf(AbstractFlyingObject::notValid);
         enemyAircrafts.removeIf(AbstractFlyingObject::notValid); // ?由于要绘制爆炸动画，此部分的后处理放在paintVanish中
+        MachineGun.removeIf(AbstractFlyingObject::notValid);
         props.removeIf(AbstractFlyingObject::notValid);
     }
 

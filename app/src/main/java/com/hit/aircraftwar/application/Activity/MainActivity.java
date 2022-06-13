@@ -60,13 +60,16 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     // 定义一个变量，来标识是否退出
     private static boolean isExit = false;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         baseActivity=this;//传递给非activity的类使用
         mContext=this.getBaseContext();//传递给非activity的类使用
+
+        SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+        LoginActivity.gameUser = new User(sp.getString("account", null), sp.getString("password", null), sp.getInt("credits", 0));
+
 
         //获取屏幕宽高
         DisplayMetrics dm = new DisplayMetrics();
@@ -90,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     // 设置第一个layout的按钮监听
     private void setFirstLayout(){
         // 用户中心
+
 
         userCenterButton = (Button) findViewById(R.id.user_button);
         userCenterButton.setOnClickListener(
@@ -154,7 +158,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         item_on_off = (Button) findViewById(R.id.item_on_off);
         item_on_off.setOnClickListener(
                 view ->{
-                    if(LoginActivity.isLogin == false){
+                    SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    if(!sp.getBoolean("isLogin", false)){
                         Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
                     }else {
                         if(!Settings.getInstance().getItemState()){
@@ -256,9 +261,11 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     setFirstLayout();
                 }
         );
+            // 购买第一个道具
             purchaseButton1 = (Button) findViewById(R.id.button2);
             purchaseButton1.setOnClickListener(view -> {
-                if(LoginActivity.isLogin == false){
+                SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                if(!sp.getBoolean("isLogin", false)){
                     Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
                 }else {
                     if(LoginActivity.gameUser.getCredits()<5){
@@ -271,7 +278,8 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 }});
             purchaseButton2 = (Button) findViewById(R.id.button3);
             purchaseButton2.setOnClickListener(view -> {
-                if(LoginActivity.isLogin == false){
+                SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                if(!sp.getBoolean("isLogin", false)){
                 Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
             }else {
                 if(LoginActivity.gameUser.getCredits()<5){
@@ -283,7 +291,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 }
             }});
            purchaseButton3 = (Button) findViewById(R.id.button4);
-            purchaseButton3.setOnClickListener(view -> { if(LoginActivity.isLogin == false){
+            purchaseButton3.setOnClickListener(view -> {
+                SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                if(!sp.getBoolean("isLogin", false)){
                 Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
             }else {
                 if(LoginActivity.gameUser.getCredits()<5){
@@ -295,7 +305,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                 }
             }});
             purchaseButton4 = (Button) findViewById(R.id.button5);
-            purchaseButton4.setOnClickListener(view -> { if(LoginActivity.isLogin == false){
+            purchaseButton4.setOnClickListener(view -> {
+                SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                if(!sp.getBoolean("isLogin", false)){
                 Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
             }else {
                 if(LoginActivity.gameUser.getCredits()<5){
