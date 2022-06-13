@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -96,13 +97,15 @@ public class RankActivity extends AppCompatActivity {
                     .create();
             alertDialog.show();
         });
+        // 记录排行榜信息
+        record();
 
     }
 
     /**
      * 记录一条排名信息
      */
-    public void RECORD(View view){
+    public void record(){
         if(isRecord){
             Toast.makeText(this, "已经记录过信息了", Toast.LENGTH_SHORT).show();
             return;
@@ -112,8 +115,9 @@ public class RankActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int score = intent.getIntExtra("score", 0);
         // 如果登录，则记录登录的用户名，否则是默认的用户名
-        if(LoginActivity.isLogin){
-            values.put("name", LoginActivity.gameUser.getAccount());
+        SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+        if(sp.getBoolean("isLogin", false)){
+            values.put("name", sp.getString("account", "testname1"));
         }else {
             values.put("name", "testname");
         }

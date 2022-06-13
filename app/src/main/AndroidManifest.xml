@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AircraftWar">
         <activity
+            android:name=".login.UserActivity"
+            android:exported="false" />
+        <activity
             android:name=".login.RegisterActivity"
             android:exported="false" />
         <activity
