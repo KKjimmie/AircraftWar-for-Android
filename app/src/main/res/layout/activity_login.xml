@@ -30,6 +30,7 @@
             android:drawablePadding="5dp"
             android:hint="账号"
             android:maxLines="1"
+            android:minHeight="48dp"
             android:theme="@style/myedittext_color" />
 
         <EditText
@@ -43,6 +44,7 @@
             android:hint="密码"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:minHeight="48dp"
             android:theme="@style/myedittext_color" />
 
         <LinearLayout
@@ -77,10 +79,10 @@
             android:layout_below="@id/ly"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
+            android:background="#1E90FF	"
             android:text="登录"
-            android:textSize="18sp"
-            android:textColor="#FFFFFF"
-            android:background="#1E90FF	"/>
+            android:textColor="#212121"
+            android:textSize="18sp" />
 
 
     </RelativeLayout>

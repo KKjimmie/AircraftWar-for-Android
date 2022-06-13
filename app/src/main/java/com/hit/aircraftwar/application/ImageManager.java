@@ -7,6 +7,7 @@ import com.hit.aircraftwar.R;
 import com.hit.aircraftwar.aircraft.Boss;
 import com.hit.aircraftwar.aircraft.EliteEnemy;
 import com.hit.aircraftwar.aircraft.HeroAircraft;
+import com.hit.aircraftwar.aircraft.MachineGun;
 import com.hit.aircraftwar.aircraft.MobEnemy;
 import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.bullet.EnemyBullet;
@@ -39,6 +40,7 @@ public class ImageManager {
     public static Bitmap BLOOD_PROP_BITMAP = getBitmap(R.drawable.prop_blood);
     public static Bitmap BOMB_PROP_BITMAP = getBitmap(R.drawable.prop_bomb);
     public static Bitmap BULLET_PROP_BITMAP = getBitmap(R.drawable.prop_bullet);
+    public static Bitmap MACHINE_GUN_BITMAP = getBitmap(R.drawable.hero);
 
     static {
         CLASSNAME_IMAGE_MAP.put(HeroAircraft.class.getName(), HERO_BITMAP);
@@ -50,6 +52,7 @@ public class ImageManager {
         CLASSNAME_IMAGE_MAP.put(BloodProp.class.getName(), BLOOD_PROP_BITMAP);
         CLASSNAME_IMAGE_MAP.put(BombProp.class.getName(), BOMB_PROP_BITMAP);
         CLASSNAME_IMAGE_MAP.put(BulletProp.class.getName(), BULLET_PROP_BITMAP);
+        CLASSNAME_IMAGE_MAP.put(MachineGun.class.getName(),MACHINE_GUN_BITMAP);
     }
 
 

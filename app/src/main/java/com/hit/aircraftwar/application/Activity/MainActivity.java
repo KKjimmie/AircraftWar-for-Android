@@ -30,12 +30,22 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     private Button singleButton;
     private Button exitButton;
     private Button vsButton;
+    private Button storeButton;
     private CheckBox soundCheckBox;
+    private Button item_on_off;
 
     private Button easyButton;
     private Button commonButton;
     private Button hardButton;
     private Button backToMainButton;
+
+
+    private Button backButton;
+    private Button lookButton;
+    private Button purchaseButton1;
+    private Button purchaseButton2;
+    private Button purchaseButton3;
+    private Button purchaseButton4;
 
     public static int width;
     public static int height;
@@ -107,7 +117,14 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                         startActivity(intent);
                     }
                 });
-
+        //商店
+        storeButton = (Button) findViewById(R.id.store_button);
+        storeButton.setOnClickListener(
+                view -> {
+                    setContentView(R.layout.activity_store);
+                    setstoreLayout();
+                }
+        );
         // 退出游戏
         exitButton = (Button) findViewById(R.id.exit_button);
         exitButton.setOnClickListener(
@@ -122,6 +139,21 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         // 音效选择
         soundCheckBox = (CheckBox) findViewById(R.id.sound_check_box);
         soundCheckBox.setOnCheckedChangeListener(this);
+        // 道具选择使用
+        item_on_off = (Button) findViewById(R.id.item_on_off);
+        item_on_off.setOnClickListener(
+                view ->{
+                    if(LoginActivity.isLogin == false){
+                        Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
+                    }else {
+                        if(!Settings.getInstance().getItemState()){
+                            Settings.getInstance().setItemuseOn();
+                            Toast.makeText(this, "道具使用 on", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Settings.getInstance().setItemuseOff();
+                            Toast.makeText(this, "道具使用 off", Toast.LENGTH_SHORT).show();
+                        }
+                }});
     }
 
     // 设置第二个layout的监听按钮
@@ -205,4 +237,63 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         }
     }
 
+    private void setstoreLayout(){
+        backButton = (Button) findViewById(R.id.button);
+        backButton.setOnClickListener(
+                view -> {
+                    setContentView(R.layout.activity_main);
+                    setFirstLayout();
+                }
+        );
+            purchaseButton1 = (Button) findViewById(R.id.button2);
+            purchaseButton1.setOnClickListener(view -> {
+                if(LoginActivity.isLogin == false){
+                    Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
+                }else {
+                    if(LoginActivity.gameUser.getCredits()<5){
+                        Toast.makeText(this, "积分不足!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem1(), Toast.LENGTH_SHORT).show();
+                    }else{
+                        LoginActivity.gameUser.useCredits();
+                        LoginActivity.gameUser.addItem1();
+                        Toast.makeText(this, "购买成功!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem1(), Toast.LENGTH_SHORT).show();
+                    }
+                }});
+            purchaseButton2 = (Button) findViewById(R.id.button3);
+            purchaseButton2.setOnClickListener(view -> {
+                if(LoginActivity.isLogin == false){
+                Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
+            }else {
+                if(LoginActivity.gameUser.getCredits()<5){
+                    Toast.makeText(this, "积分不足!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem2(), Toast.LENGTH_SHORT).show();
+                }else{
+                    LoginActivity.gameUser.useCredits();
+                    LoginActivity.gameUser.addItem2();
+                    Toast.makeText(this, "购买成功!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem2(), Toast.LENGTH_SHORT).show();
+                }
+            }});
+           purchaseButton3 = (Button) findViewById(R.id.button4);
+            purchaseButton3.setOnClickListener(view -> { if(LoginActivity.isLogin == false){
+                Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
+            }else {
+                if(LoginActivity.gameUser.getCredits()<5){
+                    Toast.makeText(this, "积分不足!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem3(), Toast.LENGTH_SHORT).show();
+                }else{
+                    LoginActivity.gameUser.useCredits();
+                    LoginActivity.gameUser.addItem3();
+                    Toast.makeText(this, "购买成功!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem3(), Toast.LENGTH_SHORT).show();
+                }
+            }});
+            purchaseButton4 = (Button) findViewById(R.id.button5);
+            purchaseButton4.setOnClickListener(view -> { if(LoginActivity.isLogin == false){
+                Toast.makeText(this, "还没登录，请先登录!", Toast.LENGTH_SHORT).show();
+            }else {
+                if(LoginActivity.gameUser.getCredits()<5){
+                    Toast.makeText(this, "积分不足!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem4(), Toast.LENGTH_SHORT).show();
+                }else{
+                    LoginActivity.gameUser.useCredits();
+                    LoginActivity.gameUser.addItem4();
+                    Toast.makeText(this, "购买成功!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem4(), Toast.LENGTH_SHORT).show();
+                }
+            }});
+        }
 }

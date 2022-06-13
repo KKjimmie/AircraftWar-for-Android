@@ -115,4 +115,7 @@ public class HeroAircraft extends AbstractAircraft {
         setHeroHp(Settings.getInstance().heroHp);
     }
 
+    public void addHeropower(int power){
+        this.power=this.power+power;
+    }
 }

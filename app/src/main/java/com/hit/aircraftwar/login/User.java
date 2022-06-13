@@ -9,6 +9,10 @@ public class User {
     private String account;
     private String password;
     private int credits;
+    private int Item1 = 0;
+    private int Item2 = 0;
+    private int Item3 = 0;
+    private int Item4 = 0;
 
     public User(String account, String password, int credits) {
         this.account = account;
@@ -40,6 +44,33 @@ public class User {
         this.credits = credits;
     }
 
+    public void useCredits(){ credits = credits-5;};
+
+    public void addCredits(){ credits = credits +1;}
+
+    public void addItem1(){Item1=Item1 +1;}
+
+    public void useItem1(){Item1=Item1 -1;}
+
+    public int  getItem1(){ return Item1;}
+
+    public void addItem2(){Item2=Item2 +1;}
+
+    public void useItem2(){Item2=Item2 -1;}
+
+    public int  getItem2(){ return Item2;}
+
+    public void addItem3(){Item3=Item3 +1;}
+
+    public void useItem3(){Item3=Item3 -1;}
+
+    public int  getItem3(){ return Item3;}
+
+    public void addItem4(){Item4=Item4 +1;}
+
+    public void useItem4(){Item4=Item4 -1;}
+
+    public int  getItem4(){ return Item4;}
     @Override
     public String toString() {
         return "User{" +

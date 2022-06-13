@@ -41,11 +41,23 @@
             android:text="@string/vs" />
 
         <Button
+            android:id="@+id/store_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="商店" />
+
+        <Button
             android:id="@+id/exit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/design_default_color_error"
             android:text="@string/exit" />
+
+        <Button
+            android:id="@+id/item_on_off"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="道具开关" />
 
 
     </LinearLayout>

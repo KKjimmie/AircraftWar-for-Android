@@ -18,8 +18,10 @@ public class Settings {
     // 音效开关常量
     public static final boolean SOUND_ON = true;
     public static final boolean SOUND_OFF = false;
-
-
+    // 道具使用开关
+    public static final boolean USE_ON = true;
+    public static final boolean USE_OFF = false;
+    private boolean isItemuse = USE_OFF;
     // 默认游戏模式及音效设置
     private int gameMode = EASY_MODE;
     private boolean isSoundOn = SOUND_ON;
@@ -238,4 +240,26 @@ public class Settings {
         bulletSpeedY = 10;
 
     }
+    /**
+     * 道具设置，开
+     */
+    public void setItemuseOn() {
+        isItemuse = USE_ON;
+    }
+
+    /**
+     * 道具设置，关
+     */
+    public void setItemuseOff() {
+        isItemuse = USE_OFF;
+    }
+
+    /**
+     * 返回道具开关状态
+     * @return 道具状态（Boolean）
+     */
+    public boolean getItemState() {
+        return isItemuse;
+    }
+
 }

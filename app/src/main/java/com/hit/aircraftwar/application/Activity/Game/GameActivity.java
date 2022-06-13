@@ -24,9 +24,12 @@ import com.hit.aircraftwar.basic.CanBoom;
 import com.hit.aircraftwar.bullet.BaseBullet;
 import com.hit.aircraftwar.factory.BossFactory;
 import com.hit.aircraftwar.factory.EliteEnemyFactory;
+import com.hit.aircraftwar.factory.MachineGunFactory;
 import com.hit.aircraftwar.factory.MobEnemyFactory;
+import com.hit.aircraftwar.login.LoginActivity;
 import com.hit.aircraftwar.music.MySoundPool;
 import com.hit.aircraftwar.props.AbstractProp;
+import com.hit.aircraftwar.props.BloodProp;
 import com.hit.aircraftwar.props.BombProp;
 import com.hit.aircraftwar.rank.RankActivity;
 
@@ -44,6 +47,7 @@ public abstract class GameActivity extends AppCompatActivity {
     protected int timeInterval = Settings.getInstance().timeInterval;
     protected HeroAircraft heroAircraft;
     protected List<AbstractAircraft> enemyAircrafts;
+    protected List<AbstractAircraft> MachineGun;
     protected List<BaseBullet> heroBullets;
     protected List<BaseBullet> enemyBullets;
     protected List<AbstractProp> props;
@@ -67,12 +71,19 @@ public abstract class GameActivity extends AppCompatActivity {
     protected final MobEnemyFactory mobEnemyFactory = new MobEnemyFactory();
     protected final EliteEnemyFactory eliteEnemyFactory = new EliteEnemyFactory();
     protected final BossFactory bossFactory = new BossFactory();
+    protected final MachineGunFactory machineGunFactory = new MachineGunFactory();
     protected GameView gameView;
     // 背景图片
     public int background;
 
     // 背景音乐
     private MediaPlayer bgmPlayer;
+
+    // 道具使用开关
+    protected  boolean itemflag1;
+    protected  boolean itemflag2;
+    protected  boolean itemflag3;
+    protected  boolean itemflag4;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,7 +108,33 @@ public abstract class GameActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Objects.requireNonNull(getSupportActionBar()).hide();
-
+        // 设置道具使用
+        if (Settings.getInstance().getItemState()){
+            if(LoginActivity.gameUser.getItem1()>0){
+                LoginActivity.gameUser.useItem1();
+                itemflag1 = true;
+            }else{
+                itemflag1 = false;
+            }
+            if(LoginActivity.gameUser.getItem2()>0){
+                LoginActivity.gameUser.useItem2();
+                itemflag2 = true;
+            }else{
+                itemflag2 = false;
+            }
+            if(LoginActivity.gameUser.getItem3()>0){
+                LoginActivity.gameUser.useItem3();
+                itemflag3 = true;
+            }else{
+                itemflag3 = false;
+            }
+            if(LoginActivity.gameUser.getItem4()>0){
+                LoginActivity.gameUser.useItem4();
+                itemflag4 = true;
+            }else{
+                itemflag4 = false;
+            }
+        }
         // 重置一下分数
         score = 0;
         gameOverFlag = false;
@@ -238,6 +275,9 @@ public abstract class GameActivity extends AppCompatActivity {
         // 英雄射击
         heroBullets.addAll(heroAircraft.shoot());
         MySoundPool.playSound(MySoundPool.BULLET, false);
+        //for(AbstractAircraft gun:MachineGun){
+        //  heroBullet.addAll(gun.shoot());
+        //}
     }
 
     /**
@@ -268,6 +308,9 @@ public abstract class GameActivity extends AppCompatActivity {
         for (AbstractProp prop : props){
             prop.forward();
         }
+        //for(AbstractAircraft gun:MachineGun){
+        //    gun.forward();
+        //}
     }
 
 
@@ -323,10 +366,19 @@ public abstract class GameActivity extends AppCompatActivity {
                             }
                             score += 100;
                             bossExistFlag = false;
+                            LoginActivity.gameUser.addCredits();
                             // 切换背景音乐
                             bgmChange = true;
                         }else{
                             score += 10;
+                        }
+                        if(itemflag2){
+                            if (heroAircraft.getHp() < Settings.getInstance().maxHeroHp) {
+                                heroAircraft.decreaseHp(- 10);
+                            }
+                        }
+                        if(itemflag4){
+                            heroAircraft.addHeropower(1);
                         }
                     }
                 }
@@ -360,7 +412,17 @@ public abstract class GameActivity extends AppCompatActivity {
                     for(BaseBullet enemyBullet : enemyBullets){
                         ((BombProp) prop).addCanBoom((CanBoom) enemyBullet);
                     }
+                }else if (prop instanceof BloodProp){
+                    if(itemflag3) {
+                        if (heroAircraft.getHp() < Settings.getInstance().maxHeroHp) {
+                            heroAircraft.decreaseHp(-20);
+                        }
+                        heroAircraft.addHeropower(10);
+                    }
                 }
+                //else{
+                //    MachineGun.add(machineGunFactory.produceEnemy());
+                //}
                 prop.work();
                 prop.vanish();
             }
