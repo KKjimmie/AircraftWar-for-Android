@@ -64,6 +64,18 @@ public class LgClient {
         }
     }
 
+    // 收发信息
+    public static void responseWithType(int inputType){
+        type = inputType;
+        synchronized (LgClient.class) {
+            LgClient.send();
+        }
+
+        synchronized (LgClient.class) {
+            LgClient.listen();
+        }
+    }
+
     public static void send(){
         new Thread(new clientSend(socket, writer)).start();
     }
@@ -127,14 +139,24 @@ public class LgClient {
                 switch (jsonObject.getInt("type")) {
                     case CREATE_ACCOUNT:
                         RegisterActivity.result = jsonObject.getBoolean("result");
+                        // 通知注册界面响应
+                        RegisterActivity.registerActivity.response();
+                        break;
+
+                    case UPDATE_CREDIT:
+                        if(jsonObject.getBoolean("result")){
+                            credits = jsonObject.getInt("credits");
+                        }
                         break;
 
                     case ACCOUNT_INFO:
-                        account = jsonObject.getString("account");
-                        pwd = jsonObject.getString("password");
-                        credits = jsonObject.getInt("credits");
-                        LoginActivity.realUser = new User(account, pwd, credits);
-
+                        if(jsonObject.getBoolean("result")){
+                            account = jsonObject.getString("account");
+                            credits = jsonObject.getInt("credits");
+                            // 同步账号信息
+                            LoginActivity.gameUser.setCredits(credits);
+                        }
+                        LoginActivity.result = jsonObject.getBoolean("result");
                         // 通知登录界面响应
                         LoginActivity.loginActivity.response();
                         break;
@@ -159,26 +181,29 @@ public class LgClient {
         @Override
         public void run() {
             try {
-                JSONObject object = new JSONObject();
+                JSONObject object;
                  if(type != -1) {
+                     object = new JSONObject();
                     switch(type){
                         case CREATE_ACCOUNT:
-                            object = new JSONObject();
                             object.put("type", CREATE_ACCOUNT);
                             object.put("account", RegisterActivity.registerUser.getAccount());
                             object.put("password", RegisterActivity.registerUser.getPassword());
                             object.put("credits", RegisterActivity.registerUser.getCredits());
-                            writer.println(object.toString());
-                            type = -1;
+                            break;
+                        case UPDATE_CREDIT:
+                            object.put("type", UPDATE_CREDIT);
+                            object.put("account", LoginActivity.gameUser.getAccount());
+                            object.put("credits", LoginActivity.gameUser.getCredits());
                             break;
                         case ACCOUNT_INFO:
-                            object = new JSONObject();
                             object.put("type", ACCOUNT_INFO);
                             object.put("account", LoginActivity.gameUser.getAccount());
-                            writer.println(object.toString());
-                            type = -1;
+                            object.put("password", LoginActivity.gameUser.getPassword());
                             break;
                     }
+                     writer.println(object.toString());
+                     type = -1;
 
                 }
             } catch (Exception e) {

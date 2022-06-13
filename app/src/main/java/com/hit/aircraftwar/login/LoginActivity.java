@@ -22,17 +22,12 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // 同步锁
-    public static final Object lock = new Object();
-
     public static LoginActivity loginActivity;
-    // 服务器回传的账号信息
-    public static User realUser;
+    // 服务器回传是否登录成功信息
+    public static Boolean result;
     // 本地玩家信息
     public static User gameUser;
 
-    // 标识是否已经登录
-    public static boolean isLogin = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,18 +61,14 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EditText username = findViewById(R.id.lg_username);
-                EditText password = findViewById(R.id.lg_password);
-                // TODO: 传递账号给服务器
-                gameUser = new User(username.getText().toString(),password.getText().toString(), 1000);
-                LgClient.type = LgClient.ACCOUNT_INFO;
-
-                synchronized (lock){
-                    LgClient.send();
-                }
-
-                synchronized (lock){
-                    LgClient.listen();
+                if(! LgClient.connection_state){
+                    Toast.makeText(LoginActivity.this, "网络未连接，请检查网络设置", Toast.LENGTH_SHORT).show();
+                }else {
+                    EditText username = findViewById(R.id.lg_username);
+                    EditText password = findViewById(R.id.lg_password);
+                    // 传递账号给服务器
+                    gameUser = new User(username.getText().toString(), password.getText().toString(), 1000);
+                    LgClient.responseWithType(LgClient.ACCOUNT_INFO);
                 }
 
             }
@@ -92,26 +83,23 @@ public class LoginActivity extends AppCompatActivity {
     // 在服务器获得账号信息后，响应
     public void response(){
         //账号密码匹配
-        if (realUser.getAccount().equals(gameUser.getAccount()) && realUser.getPassword().equals(gameUser.getPassword())) {
-            isLogin = true;
+        if (result) {
             // 记录以保持登入状态
             SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
             sp.edit()
-                    .putString("account", realUser.getAccount())
-                    .putString("password", realUser.getPassword())
-                    .putInt("credits", realUser.getCredits())
+                    .putString("account", gameUser.getAccount())
+                    .putString("password", gameUser.getPassword())
+                    .putInt("credits", gameUser.getCredits())
                     .putBoolean("isLogin", true)
                     .apply();
-
+            Looper.prepare();
+            Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
             finish();
-            this.onDestroy();
         } else {
             Looper.prepare();
             Toast.makeText(LoginActivity.this, "账号或密码错误！", Toast.LENGTH_SHORT).show();
-            Looper.loop();
         }
-        // 同步账号信息
-        gameUser.setCredits(realUser.getCredits());
+        Looper.loop();
     }
 
     //接受注册界面传回来的账号

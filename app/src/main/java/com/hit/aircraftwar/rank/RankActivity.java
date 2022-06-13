@@ -97,13 +97,15 @@ public class RankActivity extends AppCompatActivity {
                     .create();
             alertDialog.show();
         });
+        // 记录排行榜信息
+        record();
 
     }
 
     /**
      * 记录一条排名信息
      */
-    public void RECORD(View view){
+    public void record(){
         if(isRecord){
             Toast.makeText(this, "已经记录过信息了", Toast.LENGTH_SHORT).show();
             return;

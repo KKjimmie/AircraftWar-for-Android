@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     if(sp.getBoolean("isLogin", false)) {
                         intent = new Intent(MainActivity.this, UserActivity.class);
                     }else{
-                        Toast.makeText(MainActivity.this, "还没登陆，请先登录！", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "还没登录，请先登录！", Toast.LENGTH_SHORT).show();
                         intent = new Intent(MainActivity.this, LoginActivity.class);
                     }
                     startActivity(intent);

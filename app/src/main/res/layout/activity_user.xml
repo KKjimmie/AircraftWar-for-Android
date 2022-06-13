@@ -36,53 +36,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="账号"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/set_account"
-        app:layout_constraintHorizontal_bias="0.683"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.331"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.441" />
+        app:layout_constraintVertical_bias="0.46" />
 
     <TextView
         android:id="@+id/set_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.643"
+        app:layout_constraintHorizontal_bias="0.623"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.441" />
+        app:layout_constraintVertical_bias="0.46" />
 
     <TextView
         android:id="@+id/credit_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="积分"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.36"
+        app:layout_constraintHorizontal_bias="0.331"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_info"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.535" />
 
     <TextView
         android:id="@+id/set_credits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.327"
-        app:layout_constraintStart_toEndOf="@+id/credit_info"
+        app:layout_constraintHorizontal_bias="0.623"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.535" />
 
     <Button
         android:id="@+id/exitLogin_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:text="退出登录"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,4 +94,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.655" />
+
+    <Button
+        android:id="@+id/user_back_button"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="4dp"
+        android:text="返回"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exitLogin_button"
+        app:layout_constraintVertical_bias="0.032" />
 </androidx.constraintlayout.widget.ConstraintLayout>

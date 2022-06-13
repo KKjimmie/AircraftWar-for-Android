@@ -61,13 +61,6 @@
             android:layout_width="141dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:onClick="RECORD"
-            android:text="@string/record" />
-
-        <Button
-            android:layout_width="141dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:onClick="RETURN_MAIN"
             android:text="@string/return_main" />
     </LinearLayout>

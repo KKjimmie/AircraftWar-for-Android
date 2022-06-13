@@ -41,11 +41,18 @@ public class UserActivity extends AppCompatActivity {
         Button exitLoginButton = findViewById(R.id.exitLogin_button);
         exitLoginButton.setOnClickListener(
                 view -> {
+                    Intent intent = new Intent(UserActivity.this, LoginActivity.class);
                     sp.edit()
                             .putBoolean("isLogin", false)
                             .apply();
-                    Intent intent = new Intent(UserActivity.this, LoginActivity.class);
                     startActivity(intent);
+                    finish();
+        });
+
+        // 返回按钮
+        Button back = findViewById(R.id.user_back_button);
+        back.setOnClickListener(
+                view -> {
                     finish();
         });
     }

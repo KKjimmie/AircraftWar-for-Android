@@ -2,8 +2,11 @@ package com.hit.aircraftwar.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -17,13 +20,18 @@ import java.util.Objects;
 public class RegisterActivity extends AppCompatActivity {
 
     public static User registerUser;
-    public static boolean result;
-    public static Object lock = new Object();
+    public Intent intent;
+
+    public static RegisterActivity registerActivity;
+
+    // 注册结果
+    public static boolean result = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        registerActivity = this;
 
         // 设置全屏显示
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -46,19 +54,11 @@ public class RegisterActivity extends AppCompatActivity {
                     //存储账号密码
                     registerUser = new User(inputAccount, inputPassword, 1000);
                     // 通知注册
-                    LgClient.type = LgClient.CREATE_ACCOUNT;
-                    synchronized (lock){
-                        LgClient.send();
-                    }
-
-                    synchronized (lock){
-                        LgClient.listen();
-                    }
+                    LgClient.responseWithType(LgClient.CREATE_ACCOUNT);
                     //传回账号
-                    Intent intent = new Intent();
+                    intent = new Intent();
                     intent.putExtra("username", inputAccount);
                     setResult(RESULT_OK, intent);
-                    finish();
                 } else {
                     Toast.makeText(RegisterActivity.this,"两次密码不一致", Toast.LENGTH_SHORT).show();
                 }
@@ -66,4 +66,16 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    public void response() {
+        //账号密码匹配
+        if (result) {
+            finish();
+            Looper.prepare();
+            Toast.makeText(RegisterActivity.this, "注册成功，返回登录界面", Toast.LENGTH_SHORT).show();
+        } else {
+            Looper.prepare();
+            Toast.makeText(RegisterActivity.this, "账号已存在！", Toast.LENGTH_SHORT).show();
+        }
+        Looper.loop();
+    }
 }

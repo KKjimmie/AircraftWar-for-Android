@@ -25,7 +25,7 @@ public class Settings {
     private boolean isSoundOn = SOUND_ON;
 
     // 相关设置
-    public int timeInterval = 20;
+    public int timeInterval = 15;
     public int enemyMaxNumber = 5;
     public int cycleDuration = 600;
     public int timeToElite = 15 * cycleDuration;
