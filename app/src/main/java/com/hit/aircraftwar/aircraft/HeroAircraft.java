@@ -57,7 +57,7 @@ public class HeroAircraft extends AbstractAircraft {
                 if (instance == null) {
                     int locationX = MainActivity.width / 2;
                     int locationY = MainActivity.height - 90;
-                    int speedX = Settings.getInstance().propSpeedX;
+                    int speedX = Settings.getInstance().heroSpeedX;
                     int speedY = Settings.getInstance().heroSpeedY;
                     int hp = Settings.getInstance().heroHp;
                     instance = new HeroAircraft(locationX, locationY, speedX, speedY, hp);
@@ -115,4 +115,7 @@ public class HeroAircraft extends AbstractAircraft {
         setHeroHp(Settings.getInstance().heroHp);
     }
 
+    public void addHeropower(int power){
+        this.power=this.power+power;
+    }
 }

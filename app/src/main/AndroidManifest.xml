@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hit.aircraftwar">
+    <!-- 允许应用程序改变网络状态 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> <!-- 允许应用程序改变WIFI连接状态 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 允许应用程序访问有关的网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 允许应用程序访问WIFI网卡的网络信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 允许应用程序完全使用网络 -->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -10,17 +16,32 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AircraftWar">
         <activity
-            android:screenOrientation="sensorPortrait"
-            android:name=".application.Activity.EasyGameActivity"
+            android:name=".login.UserActivity"
             android:exported="false" />
         <activity
-            android:screenOrientation="sensorPortrait"
-            android:name=".application.Activity.CommonGameActivity"
+            android:name=".login.RegisterActivity"
             android:exported="false" />
         <activity
-            android:screenOrientation="sensorPortrait"
-            android:name=".application.Activity.HardGameActivity"
+            android:name=".login.LoginActivity"
             android:exported="false" />
+        <activity
+            android:name=".application.Activity.MatchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".rank.RankActivity"
+            android:exported="false" />
+        <activity
+            android:name=".application.Activity.Game.EasyGameActivity"
+            android:exported="false"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".application.Activity.Game.CommonGameActivity"
+            android:exported="false"
+            android:screenOrientation="sensorPortrait" />
+        <activity
+            android:name=".application.Activity.Game.HardGameActivity"
+            android:exported="false"
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name=".application.Activity.MainActivity"
             android:exported="true">

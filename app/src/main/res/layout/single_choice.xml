@@ -22,52 +22,30 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/user_button"
+            android:id="@+id/easy_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/userInfo"/>
+            android:text="@string/easy_button" />
 
         <Button
-            android:id="@+id/single_button"
+            android:id="@+id/common_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/single_mode"/>
+            android:text="@string/common_button" />
 
         <Button
-            android:id="@+id/vs_button"
-            android:layout_width="match_parent"
+            android:id="@+id/hard_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#2196F3"
-            android:text="@string/vs" />
+            android:text="@string/hard_button" />
 
         <Button
-            android:id="@+id/store_button"
+            android:id="@+id/back_to_main_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="道具商店" />
-        <Button
-            android:id="@+id/item_on_off"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="道具开关" />
-
-        <Button
-            android:id="@+id/exit_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/design_default_color_error"
-            android:text="@string/exit" />
-
-
+            android:text="@string/back" />
 
     </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/sound_check_box"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="@string/sound" />
 
 
 </LinearLayout>

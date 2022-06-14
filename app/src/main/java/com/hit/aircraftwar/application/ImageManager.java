@@ -1,15 +1,13 @@
 package com.hit.aircraftwar.application;
 
-
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import com.hit.aircraftwar.R;
 import com.hit.aircraftwar.aircraft.Boss;
 import com.hit.aircraftwar.aircraft.EliteEnemy;
 import com.hit.aircraftwar.aircraft.HeroAircraft;
+import com.hit.aircraftwar.aircraft.MachineGun;
 import com.hit.aircraftwar.aircraft.MobEnemy;
 import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.bullet.EnemyBullet;
@@ -17,11 +15,6 @@ import com.hit.aircraftwar.bullet.HeroBullet;
 import com.hit.aircraftwar.props.BloodProp;
 import com.hit.aircraftwar.props.BombProp;
 import com.hit.aircraftwar.props.BulletProp;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,11 +25,12 @@ public class ImageManager {
      */
     private static final Map<String, Bitmap> CLASSNAME_IMAGE_MAP = new HashMap<>();
 
-    public static Bitmap BACKGROUND_IMAGE_1 = getBitmap(R.drawable.bg);
-    public static Bitmap BACKGROUND_IMAGE_2 = getBitmap(R.drawable.bg2);
-    public static Bitmap BACKGROUND_IMAGE_3 = getBitmap(R.drawable.bg3);
-    public static Bitmap BACKGROUND_IMAGE_4 = getBitmap(R.drawable.bg4);
-    public static Bitmap BACKGROUND_IMAGE_5 = getBitmap(R.drawable.bg5);
+    public static int BACKGROUND_IMAGE_1 = R.drawable.bg;
+    public static int BACKGROUND_IMAGE_2 = R.drawable.bg2;
+    public static int BACKGROUND_IMAGE_3 = R.drawable.bg3;
+    public static int BACKGROUND_IMAGE_4 = R.drawable.bg4;
+    public static int BACKGROUND_IMAGE_5 = R.drawable.bg5;
+
     public static Bitmap HERO_BITMAP = getBitmap(R.drawable.hero);
     public static Bitmap BOSS_BITMAP = getBitmap(R.drawable.boss);
     public static Bitmap MOB_ENEMY_BITMAP = getBitmap(R.drawable.mob);
@@ -46,6 +40,7 @@ public class ImageManager {
     public static Bitmap BLOOD_PROP_BITMAP = getBitmap(R.drawable.prop_blood);
     public static Bitmap BOMB_PROP_BITMAP = getBitmap(R.drawable.prop_bomb);
     public static Bitmap BULLET_PROP_BITMAP = getBitmap(R.drawable.prop_bullet);
+    public static Bitmap GUN_BITMAP = getBitmap(R.drawable.gun);
 
     static {
         CLASSNAME_IMAGE_MAP.put(HeroAircraft.class.getName(), HERO_BITMAP);
@@ -57,20 +52,9 @@ public class ImageManager {
         CLASSNAME_IMAGE_MAP.put(BloodProp.class.getName(), BLOOD_PROP_BITMAP);
         CLASSNAME_IMAGE_MAP.put(BombProp.class.getName(), BOMB_PROP_BITMAP);
         CLASSNAME_IMAGE_MAP.put(BulletProp.class.getName(), BULLET_PROP_BITMAP);
+        CLASSNAME_IMAGE_MAP.put(MachineGun.class.getName(), GUN_BITMAP);
     }
 
-
-    private static Bitmap loadBitmap(String filename){
-        File file = new File(filename);
-        InputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-        return bitmap;
-    }
 
     /**
      * 从资源中获取bitmap

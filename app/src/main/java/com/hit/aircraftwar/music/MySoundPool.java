@@ -2,23 +2,22 @@ package com.hit.aircraftwar.music;
 
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.hit.aircraftwar.R;
 import com.hit.aircraftwar.application.Activity.MainActivity;
 import com.hit.aircraftwar.application.Settings;
 
 import java.util.HashMap;
 
-public class MySoundPool {
+public class MySoundPool  {
 
     // 设置为单例模式
     private volatile static MySoundPool instance = null;
 
     private static SoundPool soundPool = new SoundPool(50, AudioManager.STREAM_MUSIC,0);;
     private static HashMap<Integer, Integer> soundData= new HashMap<>();
+    private static MediaPlayer player = null;
 
     // 音乐资源
     public static int BGM = R.raw.bgm;
@@ -39,20 +38,25 @@ public class MySoundPool {
     }
 
     private MySoundPool() {
-
     }
 
 
     public static void playSound(int sound, boolean isloop){
-        AudioManager am = (AudioManager) MainActivity.mContext.getSystemService(Context.AUDIO_SERVICE);
-        float audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        float volumnCurrent = am.getStreamVolume(AudioManager.STREAM_MUSIC);
-        float volumnRatio = volumnCurrent / audioMaxVolumn;
-        // 循环次数
-        int loopNum;
-        if(isloop){
-            loopNum = -1;
-        }else loopNum = 0;
-        soundPool.play(soundData.get(sound), volumnRatio,volumnRatio , 1, loopNum, 1);
+        if(! Settings.getInstance().getVideoState()){
+            return;
+        }
+        new Thread(() -> {
+            AudioManager am = (AudioManager) MainActivity.mContext.getSystemService(Context.AUDIO_SERVICE);
+            float audioMaxVolumn = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+            float volumnCurrent = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+            float volumnRatio = volumnCurrent / audioMaxVolumn;
+            // 循环次数
+            int loopNum;
+            if(isloop){
+                loopNum = -1;
+            }else loopNum = 0;
+            soundPool.play(soundData.get(sound), volumnRatio,volumnRatio , 1, loopNum, 1);
+        }).start();
     }
+
 }
