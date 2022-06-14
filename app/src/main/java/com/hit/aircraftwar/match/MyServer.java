@@ -24,6 +24,7 @@ public class MyServer {
     public static int clientScore;
     public static boolean isClientConnected = false;
     public static String clientAccount = "";
+    public static boolean clientState = false;
 
     public MyServer() {
         try {
@@ -70,6 +71,7 @@ class Server_listen implements Runnable{
                 JSONObject object = (JSONObject) ois.readObject();
                 MyServer.clientScore = object.getInt("score");
                 MyServer.clientAccount = object.getString("account");
+                MyServer.clientState = object.getBoolean("over");
                 }
         }catch (Exception e){
             e.printStackTrace();
@@ -98,6 +100,7 @@ class Server_send implements Runnable{
                 JSONObject object = new JSONObject();
                 object.put("account", LoginActivity.gameUser.getAccount());
                 object.put("score", GameActivity.score);
+                object.put("over", GameActivity.gameOverFlag);
                 oos.writeObject(object);
                 oos.flush();
                 // 1秒发送一次

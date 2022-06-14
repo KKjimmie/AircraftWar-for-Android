@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.hit.aircraftwar.R;
@@ -40,6 +40,24 @@ public class MatchActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_match);
 
+        // 开房间按钮
+        Button createRoom = findViewById(R.id.server_button);
+        createRoom.setOnClickListener(view -> {
+            createRoom();
+        });
+
+        // 加入房间按钮
+        Button joinRoom = findViewById(R.id.client_button);
+        joinRoom.setOnClickListener(view ->{
+            EditText editText = findViewById(R.id.ip_edittext);
+            String ip = editText.getText().toString();
+            if("".equals(ip)){
+                Toast.makeText(this, "请输入房主ip", Toast.LENGTH_SHORT).show();
+            }else{
+                joinRoom(ip);
+            }
+        });
+        // 返回按钮
         Button back = findViewById(R.id.match_back_button);
         back.setOnClickListener(view ->{
            finish();
@@ -47,7 +65,7 @@ public class MatchActivity extends AppCompatActivity {
     }
 
     // 创建房间
-    public void CREATE_ROOM(View view){
+    public void createRoom(){
         isClient = false;
         new Thread(new Runnable() {
             @Override
@@ -66,13 +84,16 @@ public class MatchActivity extends AppCompatActivity {
         }
     }
 
-    // 加入房间
-    public void JOIN_ROOM(View view){
+    /**
+     * 加入房间
+     * @param ip 房主ip
+     */
+    public void joinRoom(String ip){
         isClient = true;
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new MyClient();
+                new MyClient(ip);
             }
         }).start();
         Toast.makeText(this, "搜索房间中。。。",Toast.LENGTH_LONG).show();

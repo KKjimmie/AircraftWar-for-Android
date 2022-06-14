@@ -23,8 +23,11 @@ public class MyClient {
     public static String TAG = "客户端类";
     public static int serverScore = 0;
     public static String serverAccount = "";
+    public static boolean serverState = false;
+    private static String ip;
 
-    public MyClient(){
+    public MyClient(String ip){
+        this.ip = ip;
         while (!connection_state) {
             connect();
             try {
@@ -38,17 +41,16 @@ public class MyClient {
     private static void connect(){
         try {
             socket = new Socket();
+            // 10.250.133.41
             socket.connect(new InetSocketAddress
-                    ("10.250.133.41",9999),5000);
+                    (ip,9999),5000);
             connection_state = true;
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             new Thread(new Client_listen(socket,ois)).start();
             new Thread(new Client_send(socket,oos)).start();
-//            new Thread(new Client_heart(socket,oos)).start();
         }catch (Exception e){
             e.printStackTrace();
-            System.out.println("111111111111111111111111111111");
             connection_state = false;
         }
     }
@@ -79,10 +81,11 @@ class Client_listen implements Runnable{
     public void run() {
         try {
             while (true){
-//                Toast.makeText(MainActivity.baseActivity, ois.readObject().toString(), Toast.LENGTH_SHORT).show();
                 JSONObject object = (JSONObject) ois.readObject();
                 MyClient.serverScore = object.getInt("score");
                 MyClient.serverAccount = object.getString("account");
+                MyClient.serverState = object.getBoolean("over");
+
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -106,42 +109,7 @@ class Client_send implements Runnable{
                 JSONObject object = new JSONObject();
                 object.put("account", LoginActivity.gameUser.getAccount());
                 object.put("score", GameActivity.score);
-                oos.writeObject(object);
-                oos.flush();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            try {
-                System.out.println("1111111112222222222222222222222222");
-                socket.close();
-                MyClient.connection_state = false;
-                MyClient.reconnect();
-            }catch (Exception ee){
-                System.out.println("2222222222222222222222222");
-                ee.printStackTrace();
-            }
-        }
-    }
-}
-// TODO:心跳包保证连接
-class Client_heart implements Runnable{
-    private Socket socket;
-    private ObjectOutputStream oos;
-
-    Client_heart(Socket socket, ObjectOutputStream oos){
-        this.socket = socket;
-        this.oos = oos;
-    }
-
-    @Override
-    public void run() {
-        try {
-            System.out.println("心跳包线程已启动...");
-            while (true){
-                Thread.sleep(5000);
-                JSONObject object = new JSONObject();
-                object.put("type","heart");
-                object.put("msg","心跳包");
+                object.put("over", GameActivity.gameOverFlag);
                 oos.writeObject(object);
                 oos.flush();
             }
@@ -152,10 +120,8 @@ class Client_heart implements Runnable{
                 MyClient.connection_state = false;
                 MyClient.reconnect();
             }catch (Exception ee){
-                System.out.println("33333333333333333333");
                 ee.printStackTrace();
             }
         }
     }
 }
-

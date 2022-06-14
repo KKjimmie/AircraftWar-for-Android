@@ -44,9 +44,15 @@ public class User {
         this.credits = credits;
     }
 
-    public void useCredits(){ credits = credits-5;};
+    public void useCredits(){
+        credits = credits-5;
+        LgClient.responseWithType(LgClient.UPDATE_CREDIT);
+    }
 
-    public void addCredits(){ credits = credits +1;}
+    public void addCredits(){
+        credits = credits +1;
+        LgClient.responseWithType(LgClient.UPDATE_CREDIT);
+    }
 
     public void addItem1(){Item1=Item1 +1;}
 

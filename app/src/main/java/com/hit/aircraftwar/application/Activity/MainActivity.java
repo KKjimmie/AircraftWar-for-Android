@@ -20,6 +20,7 @@ import com.hit.aircraftwar.application.Activity.Game.CommonGameActivity;
 import com.hit.aircraftwar.application.Activity.Game.EasyGameActivity;
 import com.hit.aircraftwar.application.Activity.Game.HardGameActivity;
 import com.hit.aircraftwar.application.Settings;
+import com.hit.aircraftwar.login.LgClient;
 import com.hit.aircraftwar.login.LoginActivity;
 import com.hit.aircraftwar.login.User;
 import com.hit.aircraftwar.login.UserActivity;
@@ -66,6 +67,14 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         setContentView(R.layout.activity_main);
         baseActivity=this;//传递给非activity的类使用
         mContext=this.getBaseContext();//传递给非activity的类使用
+
+        // 连接服务器
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                LgClient.connect();
+            }
+        }).start();
 
         SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
         LoginActivity.gameUser = new User(sp.getString("account", null), sp.getString("password", null), sp.getInt("credits", 0));
@@ -272,6 +281,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                         Toast.makeText(this, "积分不足!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem1(), Toast.LENGTH_SHORT).show();
                     }else{
                         LoginActivity.gameUser.useCredits();
+                        sp.edit()
+                                .putInt("credits", LoginActivity.gameUser.getCredits())
+                                .apply();
                         LoginActivity.gameUser.addItem1();
                         Toast.makeText(this, "购买成功!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem1(), Toast.LENGTH_SHORT).show();
                     }
@@ -286,6 +298,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     Toast.makeText(this, "积分不足!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem2(), Toast.LENGTH_SHORT).show();
                 }else{
                     LoginActivity.gameUser.useCredits();
+                    sp.edit()
+                            .putInt("credits", LoginActivity.gameUser.getCredits())
+                            .apply();
                     LoginActivity.gameUser.addItem2();
                     Toast.makeText(this, "购买成功!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem2(), Toast.LENGTH_SHORT).show();
                 }
@@ -300,6 +315,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     Toast.makeText(this, "积分不足!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem3(), Toast.LENGTH_SHORT).show();
                 }else{
                     LoginActivity.gameUser.useCredits();
+                    sp.edit()
+                            .putInt("credits", LoginActivity.gameUser.getCredits())
+                            .apply();
                     LoginActivity.gameUser.addItem3();
                     Toast.makeText(this, "购买成功!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem3(), Toast.LENGTH_SHORT).show();
                 }
@@ -314,6 +332,9 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                     Toast.makeText(this, "积分不足!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem4(), Toast.LENGTH_SHORT).show();
                 }else{
                     LoginActivity.gameUser.useCredits();
+                    sp.edit()
+                            .putInt("credits", LoginActivity.gameUser.getCredits())
+                            .apply();
                     LoginActivity.gameUser.addItem4();
                     Toast.makeText(this, "购买成功!剩余积分："+LoginActivity.gameUser.getCredits()+"道具量："+LoginActivity.gameUser.getItem4(), Toast.LENGTH_SHORT).show();
                 }

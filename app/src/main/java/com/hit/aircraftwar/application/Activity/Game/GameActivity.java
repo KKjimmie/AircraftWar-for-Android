@@ -1,6 +1,8 @@
 package com.hit.aircraftwar.application.Activity.Game;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -370,6 +372,10 @@ public abstract class GameActivity extends AppCompatActivity {
                             score += 100;
                             bossExistFlag = false;
                             LoginActivity.gameUser.addCredits();
+                            SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                            sp.edit()
+                                    .putInt("credits", LoginActivity.gameUser.getCredits())
+                                    .apply();
                             // 切换背景音乐
                             bgmChange = true;
                         } else {

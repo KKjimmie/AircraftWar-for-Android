@@ -145,7 +145,7 @@ public class LgClient {
 
                     case UPDATE_CREDIT:
                         if(jsonObject.getBoolean("result")){
-                            credits = jsonObject.getInt("credits");
+//                            credits = jsonObject.getInt("credits");
                         }
                         break;
 
@@ -202,6 +202,7 @@ public class LgClient {
                             object.put("password", LoginActivity.gameUser.getPassword());
                             break;
                     }
+                     System.out.println(object);
                      writer.println(object.toString());
                      type = -1;
 
@@ -209,12 +210,10 @@ public class LgClient {
             } catch (Exception e) {
                 e.printStackTrace();
                 try {
-                    System.out.println("1111111112222222222222222222222222");
                     socket.close();
                     MyClient.connection_state = false;
                     MyClient.reconnect();
                 } catch (Exception ee) {
-                    System.out.println("2222222222222222222222222");
                     ee.printStackTrace();
                 }
             }

@@ -12,26 +12,26 @@
       android:id="@+id/server_button"
       android:layout_width="143dp"
       android:layout_height="67dp"
+      android:text="@string/create_room"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.488"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      tools:ignore="MissingConstraints"
-      android:text="@string/create_room"
-      android:onClick="CREATE_ROOM"/>
+      app:layout_constraintVertical_bias="0.406"
+      tools:ignore="MissingConstraints" />
 
   <Button
       android:id="@+id/client_button"
       android:layout_width="143dp"
       android:layout_height="67dp"
       android:layout_marginTop="44dp"
-      android:onClick="JOIN_ROOM"
       android:text="@string/join_room"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/server_button"
-      app:layout_constraintVertical_bias="0.0" />
+      app:layout_constraintVertical_bias="0.176" />
 
   <Button
       android:id="@+id/match_back_button"
@@ -58,4 +58,19 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
+
+  <EditText
+      android:id="@+id/ip_edittext"
+      android:layout_width="141dp"
+      android:layout_height="29dp"
+      android:background="@color/white"
+      android:ems="10"
+      android:inputType="textPersonName"
+      android:hint="请输入房主ip"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.497"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.541" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -180,7 +180,7 @@ public class RankActivity extends AppCompatActivity {
     public void delete(String name, String time){
         writableDatabase = databaseHelper.getWritableDatabase();
         writableDatabase.delete(Settings.getInstance().getDiff() +"rank",
-                "name=?,time=?", new String[]{name, time});
+                "name=? and time=?", new String[]{name, time});
         show();
     }
 
