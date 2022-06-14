@@ -50,7 +50,7 @@ public class User {
     }
 
     public void addCredits(){
-        credits = credits +1;
+        credits = credits +2;
         LgClient.responseWithType(LgClient.UPDATE_CREDIT);
     }
 

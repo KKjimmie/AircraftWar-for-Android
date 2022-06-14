@@ -59,7 +59,6 @@ public abstract class GameActivity extends AppCompatActivity {
     public static boolean bossExistFlag = false; // 标志Boss是否存在
     public static int score = 0;
     protected int time = 0;
-    protected boolean machineflag = false;
     // 标记是否需要进行背景音乐的切换
     private boolean bgmChange = false;
     /**
