@@ -43,9 +43,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
     private List<BaseBullet> heroBullets;
     private List<BaseBullet> enemyBullets;
     private List<AbstractProp> props;
+    private List<AbstractAircraft> machinegun;
     public static int background;
 
-    public GameView(Context context, int bg, HeroAircraft heroAircraft, List<AbstractAircraft> enemyAircrafts, List<BaseBullet> heroBullets, List<BaseBullet> enemyBullets, List<AbstractProp> props)
+    public GameView(Context context, int bg, HeroAircraft heroAircraft, List<AbstractAircraft> enemyAircrafts, List<BaseBullet> heroBullets, List<BaseBullet> enemyBullets, List<AbstractProp> props,List<AbstractAircraft> machinegun)
     {
         super(context);
 
@@ -54,6 +55,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
         this.heroBullets = heroBullets;
         this.enemyBullets = enemyBullets;
         this.props = props;
+        this.machinegun = machinegun;
         GameView.background = bg;
 
         init();
@@ -122,6 +124,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback, Run
                 paintImageWithPositionRevised(heroBullets);
                 paintImageWithPositionRevised(props);
                 paintImageWithPositionRevised(enemyAircrafts);
+                paintImageWithPositionRevised(machinegun);
 
                 bitmap = heroAircraft.getBitmap();
                 mCanvas.drawBitmap(bitmap, heroAircraft.getLocationX() - bitmap.getWidth() / 2, heroAircraft.getLocationY() - bitmap.getHeight() / 2, paint);

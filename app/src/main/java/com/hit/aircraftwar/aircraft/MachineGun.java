@@ -19,7 +19,7 @@ public class MachineGun extends AbstractAircraft{
     public MachineGun(int locationX, int locationY, int speedX, int speedY, int hp) {
         super(locationX, locationY,speedX, speedY, hp);
         this.setStrategy(new DirectShoot());
-        this.bitmap = ImageManager.MACHINE_GUN_BITMAP;
+        this.bitmap = ImageManager.GUN_BITMAP;
     }
 
 

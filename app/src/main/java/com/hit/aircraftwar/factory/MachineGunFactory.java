@@ -10,7 +10,7 @@ public class MachineGunFactory implements ProduceEnemy{
     @Override
     public AbstractAircraft produceEnemy() {
         int locationX = (int) (Math.random() * (MainActivity.width));
-        int locationY = MainActivity.height-80;
+        int locationY = (int) (MainActivity.height * 0.9);
         int speedX = 10;
         int speedY = 0;
         return new MachineGun(locationX, locationY, speedX, speedY, 2000);

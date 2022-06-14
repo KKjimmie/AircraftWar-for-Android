@@ -147,7 +147,7 @@ public abstract class GameActivity extends AppCompatActivity {
         enemyBullets = new LinkedList<>();
         MachineGun = new LinkedList<>();
         props = new LinkedList<>();
-        gameView = new GameView(this, background, heroAircraft, enemyAircrafts, heroBullets, enemyBullets, props);
+        gameView = new GameView(this, background, heroAircraft, enemyAircrafts, heroBullets, enemyBullets, props,MachineGun);
         setContentView(gameView);
     }
 

@@ -40,7 +40,7 @@ public class ImageManager {
     public static Bitmap BLOOD_PROP_BITMAP = getBitmap(R.drawable.prop_blood);
     public static Bitmap BOMB_PROP_BITMAP = getBitmap(R.drawable.prop_bomb);
     public static Bitmap BULLET_PROP_BITMAP = getBitmap(R.drawable.prop_bullet);
-    public static Bitmap MACHINE_GUN_BITMAP = getBitmap(R.drawable.prop_bullet);
+    public static Bitmap GUN_BITMAP = getBitmap(R.drawable.gun);
 
     static {
         CLASSNAME_IMAGE_MAP.put(HeroAircraft.class.getName(), HERO_BITMAP);
@@ -52,7 +52,7 @@ public class ImageManager {
         CLASSNAME_IMAGE_MAP.put(BloodProp.class.getName(), BLOOD_PROP_BITMAP);
         CLASSNAME_IMAGE_MAP.put(BombProp.class.getName(), BOMB_PROP_BITMAP);
         CLASSNAME_IMAGE_MAP.put(BulletProp.class.getName(), BULLET_PROP_BITMAP);
-        CLASSNAME_IMAGE_MAP.put(MachineGun.class.getName(),MACHINE_GUN_BITMAP);
+        CLASSNAME_IMAGE_MAP.put(MachineGun.class.getName(), GUN_BITMAP);
     }
 
 
