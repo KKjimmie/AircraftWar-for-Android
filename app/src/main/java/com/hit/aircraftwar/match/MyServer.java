@@ -100,11 +100,9 @@ class Server_send implements Runnable{
                 JSONObject object = new JSONObject();
                 object.put("account", LoginActivity.gameUser.getAccount());
                 object.put("score", GameActivity.score);
-                object.put("over", GameActivity.gameOverFlag);
+                object.put("over", !GameActivity.gameOverFlag);
                 oos.writeObject(object);
                 oos.flush();
-                // 1秒发送一次
-                Thread.sleep(1000);
             }
         }catch (Exception e){
             e.printStackTrace();

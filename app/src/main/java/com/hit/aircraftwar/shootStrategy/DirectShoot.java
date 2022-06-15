@@ -30,7 +30,7 @@ public class DirectShoot implements ShootStrategy {
             if(isHero){
                 baseBullet = new HeroBullet(x + (i*2 - shootNum + 1)*15, y,  speedX, speedY, power);
             }else{
-                baseBullet = new EnemyBullet(x + (i*2 - shootNum + 1)*15, y,  speedX, speedY*2, power);
+                baseBullet = new EnemyBullet(x + (i*2 - shootNum + 1)*15, y,  speedX, (int) (speedY*1.5), power);
             }
             res.add(baseBullet);
         }

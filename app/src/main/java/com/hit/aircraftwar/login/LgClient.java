@@ -35,18 +35,6 @@ public class LgClient {
 
     public static int type = -1;
 
-
-//    public LgClient() {
-//        while (!connection_state) {
-//            connect();
-//            try {
-//                Thread.sleep(3000);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
     public static void connect() {
         try {
             socket = new Socket();
@@ -59,7 +47,7 @@ public class LgClient {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("111111111111111111111111111111");
+//            System.out.println("111111111111111111111111111111");
             connection_state = false;
         }
     }

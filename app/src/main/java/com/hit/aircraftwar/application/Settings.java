@@ -237,7 +237,7 @@ public class Settings {
         bulletPlus = 1;
         hpPlus = 10;
         baseBulletPower = 10;
-        bulletSpeedY = 10;
+        bulletSpeedY = 8;
 
     }
     /**

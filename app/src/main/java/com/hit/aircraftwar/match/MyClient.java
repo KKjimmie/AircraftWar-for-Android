@@ -109,7 +109,7 @@ class Client_send implements Runnable{
                 JSONObject object = new JSONObject();
                 object.put("account", LoginActivity.gameUser.getAccount());
                 object.put("score", GameActivity.score);
-                object.put("over", GameActivity.gameOverFlag);
+                object.put("over", !GameActivity.gameOverFlag);
                 oos.writeObject(object);
                 oos.flush();
             }
